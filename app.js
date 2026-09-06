@@ -1,7 +1,3 @@
-/* =============================================================
-   IXVYN / HOMEPAGE ENGINE
-============================================================= */
-
 "use strict";
 
 
@@ -148,11 +144,13 @@ function activateStage(stage) {
     if (!stage) return;
 
 
-    stages.forEach(item => {
+    stages.forEach(
+        item => {
 
-        item.classList.remove("active");
+            item.classList.remove("active");
 
-    });
+        }
+    );
 
 
     stage.classList.add("active");
@@ -194,56 +192,94 @@ function activateStage(stage) {
 }
 
 
-stages.forEach(stage => {
+/* =============================================================
+   LOOP AUTO-CYCLE
+============================================================= */
 
-    stage.addEventListener(
-        "click",
-        () => {
+let currentStage = 0;
 
-            activateStage(stage);
+let loopTimer = null;
 
-        }
-    );
 
-});
+function startLoopCycle() {
+
+    if (
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches
+    ) {
+
+        return;
+
+    }
+
+
+    if (loopTimer) {
+
+        clearInterval(loopTimer);
+
+    }
+
+
+    loopTimer =
+        setInterval(
+            () => {
+
+                if (
+                    document.hidden ||
+                    !stages.length
+                ) {
+
+                    return;
+
+                }
+
+
+                currentStage =
+                    (
+                        currentStage + 1
+                    )
+                    %
+                    stages.length;
+
+
+                activateStage(
+                    stages[currentStage]
+                );
+
+            },
+            4200
+        );
+
+}
+
+
+stages.forEach(
+    (stage, index) => {
+
+        stage.addEventListener(
+            "click",
+            () => {
+
+                currentStage =
+                    index;
+
+                activateStage(stage);
+
+            }
+        );
+
+    }
+);
 
 
 if (stages.length) {
-
-    let currentStage = 0;
 
     activateStage(
         stages[0]
     );
 
-
-    setInterval(
-        () => {
-
-            if (
-                document.hidden ||
-                window.matchMedia(
-                    "(prefers-reduced-motion: reduce)"
-                ).matches
-            ) {
-
-                return;
-
-            }
-
-
-            currentStage =
-                (currentStage + 1)
-                % stages.length;
-
-
-            activateStage(
-                stages[currentStage]
-            );
-
-        },
-        4200
-    );
+    startLoopCycle();
 
 }
 
@@ -547,18 +583,15 @@ if (canvas) {
 
                 ctx.beginPath();
 
-
                 ctx.moveTo(
                     x + offsetX,
                     0
                 );
 
-
                 ctx.lineTo(
                     x + offsetX,
                     height
                 );
-
 
                 ctx.stroke();
 
@@ -573,18 +606,15 @@ if (canvas) {
 
                 ctx.beginPath();
 
-
                 ctx.moveTo(
                     0,
                     y + offsetY
                 );
 
-
                 ctx.lineTo(
                     width,
                     y + offsetY
                 );
-
 
                 ctx.stroke();
 
@@ -636,13 +666,19 @@ if (canvas) {
                 const x =
                     particle.x
                     + drift
-                    + (pointerX - .5)
+                    + (
+                        pointerX
+                        - .5
+                    )
                     * 8;
 
 
                 const y =
                     particle.y
-                    + (pointerY - .5)
+                    + (
+                        pointerY
+                        - .5
+                    )
                     * 8;
 
 
@@ -680,20 +716,6 @@ if (canvas) {
 
         function drawSignal(time) {
 
-            /*
-               The field evolves according to
-               how far the user has entered the page.
-
-               HERO
-               ↓
-               OBSERVATION
-               ↓
-               CONVERGENCE
-               ↓
-               INTERPRETATION
-            */
-
-
             const maxScroll =
                 Math.max(
                     document.documentElement
@@ -708,10 +730,20 @@ if (canvas) {
                 / maxScroll;
 
 
+            /*
+               0 → scattered observation
+
+               0.3 → convergence
+
+               0.6 → connected system
+
+               1 → recurring loop
+            */
+
             const progress =
                 Math.min(
                     Math.max(
-                        scroll * 2.8,
+                        scroll * 2.4,
                         0
                     ),
                     1
@@ -722,7 +754,11 @@ if (canvas) {
                 width *
                 (
                     .5
-                    + (pointerX - .5)
+                    +
+                    (
+                        pointerX
+                        - .5
+                    )
                     * .035
                 );
 
@@ -731,7 +767,11 @@ if (canvas) {
                 height *
                 (
                     .47
-                    + (pointerY - .5)
+                    +
+                    (
+                        pointerY
+                        - .5
+                    )
                     * .035
                 );
 
@@ -754,7 +794,7 @@ if (canvas) {
                 *
                 (
                     1
-                    + progress * .25
+                    + progress * .28
                 );
 
 
@@ -769,7 +809,7 @@ if (canvas) {
 
 
             /* =================================================
-               PRIMARY FIELD
+               FIELD
             ================================================== */
 
             ctx.beginPath();
@@ -789,12 +829,11 @@ if (canvas) {
                     184,
                     255,
                     101,
-                    ${.08 + progress * .08}
+                    ${.08 + progress * .1}
                 )`;
 
 
             ctx.lineWidth = 1;
-
 
             ctx.stroke();
 
@@ -918,7 +957,7 @@ if (canvas) {
 
 
                 const convergence =
-                    progress * .72;
+                    progress * .76;
 
 
                 const endX =
@@ -989,7 +1028,7 @@ if (canvas) {
                         184,
                         255,
                         101,
-                        ${.07 + progress * .17}
+                        ${.06 + progress * .2}
                     )`;
 
 
@@ -1010,7 +1049,8 @@ if (canvas) {
 
             const nodeRadius =
                 3
-                + progress * 7;
+                +
+                progress * 7;
 
 
             ctx.beginPath();
@@ -1036,7 +1076,8 @@ if (canvas) {
 
             ctx.shadowBlur =
                 12
-                + progress * 22;
+                +
+                progress * 22;
 
 
             ctx.shadowColor =
@@ -1059,7 +1100,8 @@ if (canvas) {
                     *
                     (
                         .72
-                        + progress * .18
+                        +
+                        progress * .18
                     );
 
 
@@ -1186,7 +1228,7 @@ if (canvas) {
 
 
         /* =====================================================
-           TAB VISIBILITY
+           VISIBILITY
         ====================================================== */
 
         document.addEventListener(
@@ -1201,7 +1243,9 @@ if (canvas) {
                         animationFrame
                     );
 
-                } else {
+                } else if (
+                    !reducedMotion.matches
+                ) {
 
                     animationFrame =
                         requestAnimationFrame(
@@ -1238,7 +1282,7 @@ if (canvas) {
 
 
 /* =============================================================
-   EVIDENCE FIELD INTERACTION
+   EVIDENCE FIELD — SIGNAL CONVERGENCE
 ============================================================= */
 
 const evidenceField =
@@ -1248,6 +1292,27 @@ const evidenceField =
 
 
 if (evidenceField) {
+
+    const evidenceItems =
+        evidenceField.querySelectorAll(
+            ":scope > span"
+        );
+
+
+    function resetEvidence() {
+
+        evidenceItems.forEach(
+            item => {
+
+                item.style.transform = "";
+
+                item.style.color = "";
+
+            }
+        );
+
+    }
+
 
     evidenceField.addEventListener(
         "pointermove",
@@ -1276,46 +1341,62 @@ if (evidenceField) {
                 rect.height / 2;
 
 
-            const dx =
+            evidenceItems.forEach(
                 (
-                    centerX
-                    - x
-                )
-                * .08;
+                    item,
+                    index
+                ) => {
+
+                    const itemRect =
+                        item.getBoundingClientRect();
 
 
-            const dy =
-                (
-                    centerY
-                    - y
-                )
-                * .08;
+                    const itemX =
+                        itemRect.left
+                        - rect.left;
 
 
-            evidenceField
-                .querySelectorAll("span")
-                .forEach(
-                    (
-                        item,
-                        index
-                    ) => {
-
-                        const strength =
-                            1
-                            + (
-                                index % 3
-                            )
-                            * .3;
+                    const itemY =
+                        itemRect.top
+                        - rect.top;
 
 
-                        item.style.transform =
-                            `translate(
-                                ${dx * strength}px,
-                                ${dy * strength}px
-                            )`;
+                    const dx =
+                        (
+                            centerX
+                            - itemX
+                        )
+                        * .06;
 
-                    }
-                );
+
+                    const dy =
+                        (
+                            centerY
+                            - itemY
+                        )
+                        * .06;
+
+
+                    const pointerInfluence =
+                        (
+                            index % 2 === 0
+                                ? 1
+                                : .65
+                        );
+
+
+                    item.style.transform =
+                        `translate(
+                            ${dx * pointerInfluence}px,
+                            ${dy * pointerInfluence}px
+                        )`;
+
+
+                    item.style.color =
+                        "rgba(184,255,101,.42)";
+
+                }
+            );
 
         },
         {
@@ -1326,64 +1407,55 @@ if (evidenceField) {
 
     evidenceField.addEventListener(
         "pointerleave",
-        () => {
-
-            evidenceField
-                .querySelectorAll("span")
-                .forEach(
-                    item => {
-
-                        item.style.transform =
-                            "";
-
-                    }
-                );
-
-        }
+        resetEvidence
     );
 
 }
 
 
 /* =============================================================
-   MODULE FOCUS
+   MODULE INTERACTION
 ============================================================= */
 
-document
-    .querySelectorAll(".module")
-    .forEach(
-        module => {
-
-            module.addEventListener(
-                "pointerenter",
-                () => {
-
-                    document.body.dataset.focus =
-                        module.dataset.module
-                        || "";
-
-                }
-            );
-
-
-            module.addEventListener(
-                "pointerleave",
-                () => {
-
-                    delete
-                        document.body
-                            .dataset
-                            .focus;
-
-                }
-            );
-
-        }
+const modules =
+    document.querySelectorAll(
+        ".module"
     );
 
 
+modules.forEach(
+    module => {
+
+        module.addEventListener(
+            "pointerenter",
+            () => {
+
+                document.body.dataset.focus =
+                    module.dataset.module
+                    || "";
+
+            }
+        );
+
+
+        module.addEventListener(
+            "pointerleave",
+            () => {
+
+                delete
+                    document.body
+                        .dataset
+                        .focus;
+
+            }
+        );
+
+    }
+);
+
+
 /* =============================================================
-   INITIALIZATION
+   PAGE INITIALIZATION
 ============================================================= */
 
 document.documentElement
@@ -1395,7 +1467,6 @@ console.log(
     "%cIXVYN",
     "color:#b8ff65;font-weight:800;font-size:18px"
 );
-
 
 console.log(
     "Continuous civic intelligence initialized."
