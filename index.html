@@ -2,39 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     >
-    <meta name="theme-color" content="#050706">
+
     <meta
         name="description"
         content="IXVYN — a continuous intelligence layer for safer streets."
     >
 
-    <title>IXVYN — The City, In Motion</title>
+    <meta name="theme-color" content="#050706">
+
+    <title>IXVYN — The City Is Full of Signals</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <!-- =========================================================
+    <!-- =====================================================
          ATMOSPHERE
-    ========================================================== -->
+    ====================================================== -->
 
     <div class="noise" aria-hidden="true"></div>
     <div class="vignette" aria-hidden="true"></div>
 
     <canvas id="world" aria-hidden="true"></canvas>
 
-    <!-- =========================================================
+
+    <!-- =====================================================
          HEADER
-    ========================================================== -->
+    ====================================================== -->
 
     <header class="topbar">
 
-        <a class="brand" href="#top" aria-label="IXVYN home">
+        <a
+            class="brand"
+            href="#top"
+            aria-label="IXVYN home"
+        >
             <span class="brand-mark"></span>
             <span>IXVYN</span>
         </a>
@@ -51,140 +59,242 @@
         </button>
 
         <nav class="nav" id="nav">
+
             <a href="#system">SYSTEM</a>
             <a href="#loop">LOOP</a>
             <a href="#systems">MODULES</a>
+
         </nav>
 
     </header>
 
-    <!-- =========================================================
+
+    <!-- =====================================================
          MAIN
-    ========================================================== -->
+    ====================================================== -->
 
     <main id="top">
 
-        <!-- =====================================================
+
+        <!-- =================================================
              HERO
-        ====================================================== -->
+        ================================================== -->
 
         <section class="hero">
 
-            <div class="hero-grid" aria-hidden="true"></div>
+            <div
+                class="hero-grid"
+                aria-hidden="true"
+            ></div>
+
 
             <div class="hero-content">
 
                 <div class="eyebrow">
+
                     <span class="status-dot"></span>
+
                     CIVIC INTELLIGENCE / 01
+
                 </div>
 
+
                 <h1>
+
                     <span>THE CITY</span>
+
                     <span>IS FULL OF</span>
+
                     <em>SIGNALS.</em>
+
                 </h1>
 
+
                 <p class="hero-copy">
-                    IXVYN turns visual evidence from the street into a
-                    continuous safety intelligence loop — from observation
-                    to action, and back again.
+
+                    IXVYN turns visual evidence from the street
+                    into a continuous safety intelligence loop —
+                    from observation to action, and back again.
+
                 </p>
 
+
                 <div class="hero-actions">
-                    <a class="primary-action" href="#system">
+
+                    <a
+                        class="primary-action"
+                        href="#system"
+                    >
                         ENTER THE SYSTEM
                         <span>↗</span>
                     </a>
 
-                    <a class="secondary-action" href="#loop">
+
+                    <a
+                        class="secondary-action"
+                        href="#loop"
+                    >
                         SEE THE LOOP
                     </a>
+
                 </div>
 
             </div>
 
-            <div class="hero-instrument" aria-hidden="true">
+
+            <!-- =================================================
+                 HERO INSTRUMENT
+            ================================================== -->
+
+            <div
+                class="hero-instrument"
+                aria-hidden="true"
+            >
 
                 <div class="instrument-label label-top">
+
                     <span>LIVE FIELD</span>
+
                     <b>00:01</b>
+
                 </div>
+
 
                 <div class="core-system">
 
                     <div class="ring ring-outer"></div>
+
                     <div class="ring ring-mid"></div>
+
                     <div class="ring ring-inner"></div>
+
 
                     <div class="crosshair"></div>
 
+
                     <div class="core">
+
                         <div class="core-light"></div>
+
                     </div>
-                    <div class="ixvyn-lotus" aria-hidden="true">
-    <svg viewBox="0 0 100 100">
-        <path d="M50 78 C34 78 20 67 18 53 C31 53 42 60 50 70 C58 60 69 53 82 53 C80 67 66 78 50 78Z"></path>
-        <path d="M50 70 C40 57 40 42 50 25 C60 42 60 57 50 70Z"></path>
-        <path d="M45 70 C31 61 25 48 28 35 C40 42 47 54 50 67"></path>
-        <path d="M55 70 C69 61 75 48 72 35 C60 42 53 54 50 67"></path>
-    </svg>
-</div>
+
+
+                    <!-- IXVYN SIGNATURE -->
+
+                    <div class="ixvyn-lotus">
+
+                        <svg
+                            viewBox="0 0 100 100"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+
+                            <path
+                                d="M50 78 C34 78 20 67 18 53 C31 53 42 60 50 70 C58 60 69 53 82 53 C80 67 66 78 50 78Z"
+                            ></path>
+
+                            <path
+                                d="M50 70 C40 57 40 42 50 25 C60 42 60 57 50 70Z"
+                            ></path>
+
+                            <path
+                                d="M45 70 C31 61 25 48 28 35 C40 42 47 54 50 67"
+                            ></path>
+
+                            <path
+                                d="M55 70 C69 61 75 48 72 35 C60 42 53 54 50 67"
+                            ></path>
+
+                        </svg>
+
+                    </div>
+
 
                     <div class="orbit orbit-a"></div>
+
                     <div class="orbit orbit-b"></div>
 
+
                     <div class="signal-line line-a"></div>
+
                     <div class="signal-line line-b"></div>
+
                     <div class="signal-line line-c"></div>
 
                 </div>
 
+
                 <div class="instrument-label label-bottom">
+
                     <span>FIELD STATE</span>
+
                     <b>OBSERVING</b>
+
                 </div>
 
             </div>
 
+
             <div class="scroll-cue">
+
                 <span>SCROLL TO ENTER</span>
+
                 <i></i>
+
             </div>
 
         </section>
 
 
-        <!-- =====================================================
-             PROBLEM
-        ====================================================== -->
 
-        <section class="problem section" id="system">
+        <!-- =================================================
+             THE GAP
+        ================================================== -->
 
-            <div class="section-index">01 / THE GAP</div>
+        <section
+            class="problem section"
+            id="system"
+        >
+
+            <div class="section-index">
+                01 / THE GAP
+            </div>
+
 
             <div class="problem-layout">
 
+
                 <div>
-                    <p class="kicker">THE STREET IS THE DATASET.</p>
+
+                    <p class="kicker">
+                        THE STREET IS THE DATASET.
+                    </p>
+
 
                     <h2>
+
                         Cities already contain
                         <span>the evidence.</span>
+
                     </h2>
+
                 </div>
+
 
                 <div class="problem-text">
 
                     <p>
-                        Road geometry. Movement. Visibility. Crossings.
-                        People. Vehicles. Infrastructure. Context.
+                        Road geometry. Movement. Visibility.
+                        Crossings. People. Vehicles.
+                        Infrastructure. Context.
                     </p>
 
+
                     <p>
-                        But observation, assessment, intervention and
-                        follow-up often live apart.
+                        But observation, assessment,
+                        intervention and follow-up often
+                        live apart.
                     </p>
+
 
                     <p class="highlight">
                         IXVYN connects them.
@@ -194,15 +304,26 @@
 
             </div>
 
-            <div class="evidence-field" aria-hidden="true">
+
+            <div
+                class="evidence-field"
+                aria-hidden="true"
+            >
 
                 <span>ROAD GEOMETRY</span>
+
                 <span>MOVEMENT</span>
+
                 <span>VISIBILITY</span>
+
                 <span>CONTEXT</span>
+
                 <span>EXPOSURE</span>
+
                 <span>INFRASTRUCTURE</span>
+
                 <span>HUMAN PRESENCE</span>
+
                 <span>INTERACTION</span>
 
             </div>
@@ -210,182 +331,381 @@
         </section>
 
 
-        <!-- =====================================================
-             LOOP
-        ====================================================== -->
 
-        <section class="loop section" id="loop">
+        <!-- =================================================
+             THE LOOP
+        ================================================== -->
 
-            <div class="section-index">02 / THE LOOP</div>
+        <section
+            class="loop section"
+            id="loop"
+        >
+
+            <div class="section-index">
+                02 / THE LOOP
+            </div>
+
 
             <div class="loop-heading">
-                <p class="kicker">FROM SIGNAL TO CHANGE.</p>
+
+                <p class="kicker">
+                    FROM SIGNAL TO CHANGE.
+                </p>
+
 
                 <h2>
+
                     A city that can
                     <span>remember.</span>
+
                 </h2>
+
             </div>
+
 
             <div class="loop-system">
 
-                <div class="loop-core" id="loop-core">
+
+                <div
+                    class="loop-core"
+                    id="loop-core"
+                >
+
                     <div class="loop-core-inner"></div>
+
                 </div>
 
-                <div class="loop-stage stage-1" data-stage="OBSERVE">
+
+                <div
+                    class="loop-stage stage-1"
+                    data-stage="OBSERVE"
+                >
+
                     <span>01</span>
+
                     <b>OBSERVE</b>
+
                     <small>LENS</small>
+
                 </div>
 
-                <div class="loop-stage stage-2" data-stage="ASSESS">
+
+                <div
+                    class="loop-stage stage-2"
+                    data-stage="ASSESS"
+                >
+
                     <span>02</span>
+
                     <b>ASSESS</b>
+
                     <small>SIGNAL</small>
+
                 </div>
 
-                <div class="loop-stage stage-3" data-stage="DECIDE">
+
+                <div
+                    class="loop-stage stage-3"
+                    data-stage="DECIDE"
+                >
+
                     <span>03</span>
+
                     <b>DECIDE</b>
+
                     <small>TRAJECTORY</small>
+
                 </div>
 
-                <div class="loop-stage stage-4" data-stage="ACT">
+
+                <div
+                    class="loop-stage stage-4"
+                    data-stage="ACT"
+                >
+
                     <span>04</span>
+
                     <b>ACT</b>
+
                     <small>CIVIC</small>
+
                 </div>
 
-                <div class="loop-stage stage-5" data-stage="LEARN">
+
+                <div
+                    class="loop-stage stage-5"
+                    data-stage="LEARN"
+                >
+
                     <span>05</span>
+
                     <b>LEARN</b>
+
                     <small>MEMORY</small>
+
                 </div>
+
 
                 <div class="loop-path path-a"></div>
+
                 <div class="loop-path path-b"></div>
+
                 <div class="loop-path path-c"></div>
 
             </div>
 
+
             <div class="loop-description">
-                <span id="loop-number">01</span>
+
+                <span id="loop-number">
+                    01
+                </span>
+
 
                 <div>
-                    <strong id="loop-title">OBSERVE</strong>
+
+                    <strong id="loop-title">
+                        OBSERVE
+                    </strong>
+
+
                     <p id="loop-copy">
-                        Capture what is actually visible without
-                        prematurely deciding what it means.
+
+                        Capture what is actually visible
+                        without prematurely deciding
+                        what it means.
+
                     </p>
+
                 </div>
+
             </div>
 
         </section>
 
 
-        <!-- =====================================================
+
+        <!-- =================================================
              MODULES
-        ====================================================== -->
+        ================================================== -->
 
-        <section class="modules section" id="systems">
+        <section
+            class="modules section"
+            id="systems"
+        >
 
-            <div class="section-index">03 / THE SYSTEM</div>
+            <div class="section-index">
+                03 / THE SYSTEM
+            </div>
+
 
             <div class="modules-heading">
 
-                <p class="kicker">ONE CONTINUOUS SYSTEM.</p>
+                <p class="kicker">
+                    ONE CONTINUOUS SYSTEM.
+                </p>
+
 
                 <h2>
+
                     Five instruments.
                     <span>One loop.</span>
+
                 </h2>
 
             </div>
 
+
             <div class="module-stack">
 
-                <a class="module" href="lens.html" data-module="LENS">
-                    <div class="module-number">01</div>
 
-                    <div class="module-main">
-                        <span class="module-name">LENS</span>
-                        <span class="module-role">OBSERVE</span>
+                <a
+                    class="module"
+                    href="lens.html"
+                    data-module="LENS"
+                >
+
+                    <div class="module-number">
+                        01
                     </div>
 
+
+                    <div class="module-main">
+
+                        <span class="module-name">
+                            LENS
+                        </span>
+
+                        <span class="module-role">
+                            OBSERVE
+                        </span>
+
+                    </div>
+
+
                     <p>
-                        Structures what the street actually reveals.
+                        Structures what the street
+                        actually reveals.
                     </p>
 
-                    <span class="module-arrow">↗</span>
+
+                    <span class="module-arrow">
+                        ↗
+                    </span>
+
                 </a>
 
 
-                <a class="module" href="signal.html" data-module="SIGNAL">
-                    <div class="module-number">02</div>
 
-                    <div class="module-main">
-                        <span class="module-name">SIGNAL</span>
-                        <span class="module-role">ASSESS</span>
+                <a
+                    class="module"
+                    href="signal.html"
+                    data-module="SIGNAL"
+                >
+
+                    <div class="module-number">
+                        02
                     </div>
 
+
+                    <div class="module-main">
+
+                        <span class="module-name">
+                            SIGNAL
+                        </span>
+
+                        <span class="module-role">
+                            ASSESS
+                        </span>
+
+                    </div>
+
+
                     <p>
-                        Turns observations into evidence-backed
-                        safety intelligence.
+                        Turns observations into
+                        evidence-backed safety intelligence.
                     </p>
 
-                    <span class="module-arrow">↗</span>
+
+                    <span class="module-arrow">
+                        ↗
+                    </span>
+
                 </a>
 
 
-                <a class="module" href="trajectory.html" data-module="TRAJECTORY">
-                    <div class="module-number">03</div>
 
-                    <div class="module-main">
-                        <span class="module-name">TRAJECTORY</span>
-                        <span class="module-role">DECIDE</span>
+                <a
+                    class="module"
+                    href="trajectory.html"
+                    data-module="TRAJECTORY"
+                >
+
+                    <div class="module-number">
+                        03
                     </div>
 
+
+                    <div class="module-main">
+
+                        <span class="module-name">
+                            TRAJECTORY
+                        </span>
+
+                        <span class="module-role">
+                            DECIDE
+                        </span>
+
+                    </div>
+
+
                     <p>
-                        Explores possible interventions while keeping
-                        the human decision-maker in control.
+                        Explores possible interventions
+                        while keeping the human decision-maker
+                        in control.
                     </p>
 
-                    <span class="module-arrow">↗</span>
+
+                    <span class="module-arrow">
+                        ↗
+                    </span>
+
                 </a>
 
 
-                <a class="module" href="civic.html" data-module="CIVIC">
-                    <div class="module-number">04</div>
 
-                    <div class="module-main">
-                        <span class="module-name">CIVIC</span>
-                        <span class="module-role">ACT</span>
+                <a
+                    class="module"
+                    href="civic.html"
+                    data-module="CIVIC"
+                >
+
+                    <div class="module-number">
+                        04
                     </div>
 
+
+                    <div class="module-main">
+
+                        <span class="module-name">
+                            CIVIC
+                        </span>
+
+                        <span class="module-role">
+                            ACT
+                        </span>
+
+                    </div>
+
+
                     <p>
-                        Converts approved decisions into structured
-                        civic action.
+                        Converts approved decisions
+                        into structured civic action.
                     </p>
 
-                    <span class="module-arrow">↗</span>
+
+                    <span class="module-arrow">
+                        ↗
+                    </span>
+
                 </a>
 
 
-                <a class="module" href="memory.html" data-module="MEMORY">
-                    <div class="module-number">05</div>
 
-                    <div class="module-main">
-                        <span class="module-name">MEMORY</span>
-                        <span class="module-role">MEASURE / LEARN</span>
+                <a
+                    class="module"
+                    href="memory.html"
+                    data-module="MEMORY"
+                >
+
+                    <div class="module-number">
+                        05
                     </div>
 
+
+                    <div class="module-main">
+
+                        <span class="module-name">
+                            MEMORY
+                        </span>
+
+                        <span class="module-role">
+                            MEASURE / LEARN
+                        </span>
+
+                    </div>
+
+
                     <p>
-                        Preserves location history and measures
-                        what changed.
+                        Preserves location history
+                        and measures what changed.
                     </p>
 
-                    <span class="module-arrow">↗</span>
+
+                    <span class="module-arrow">
+                        ↗
+                    </span>
+
                 </a>
 
             </div>
@@ -393,32 +713,60 @@
         </section>
 
 
-        <!-- =====================================================
+
+        <!-- =================================================
              THESIS
-        ====================================================== -->
+        ================================================== -->
 
         <section class="thesis section">
 
-            <div class="thesis-grid"></div>
+            <div
+                class="thesis-grid"
+                aria-hidden="true"
+            ></div>
+
 
             <div class="thesis-content">
 
-                <p class="kicker">THE PRINCIPLE</p>
+                <p class="kicker">
+                    THE PRINCIPLE
+                </p>
+
 
                 <h2>
+
                     VISION ZERO
-                    <span>SETS THE GOAL.</span>
+
+                    <span>
+                        SETS THE GOAL.
+                    </span>
+
                 </h2>
 
+
                 <h3>
+
                     IXVYN
-                    <strong>BUILDS THE LOOP.</strong>
+
+                    <strong>
+                        BUILDS THE LOOP.
+                    </strong>
+
                 </h3>
 
+
                 <p>
-                    AI can observe. AI can reason. AI can explore.
+
+                    AI can observe.
+                    AI can reason.
+                    AI can explore.
+
                     <br>
-                    <strong>Humans decide.</strong>
+
+                    <strong>
+                        Humans decide.
+                    </strong>
+
                 </p>
 
             </div>
@@ -426,22 +774,34 @@
         </section>
 
 
-        <!-- =====================================================
+
+        <!-- =================================================
              FOOTER
-        ====================================================== -->
+        ================================================== -->
 
         <footer>
 
-            <div class="footer-brand">IXVYN</div>
+            <div class="footer-brand">
+                IXVYN
+            </div>
+
 
             <div class="footer-meta">
-                <span>CONTINUOUS CIVIC INTELLIGENCE</span>
-                <span>© 2026</span>
+
+                <span>
+                    CONTINUOUS CIVIC INTELLIGENCE
+                </span>
+
+                <span>
+                    © 2026
+                </span>
+
             </div>
 
         </footer>
 
     </main>
+
 
     <script src="app.js"></script>
 
