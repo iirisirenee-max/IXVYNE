@@ -1,8 +1,3 @@
-/* =============================================================
-   IXVYN / HOMEPAGE ENGINE
-   Mobile-first cinematic civic intelligence interface
-============================================================= */
-
 :root {
 
     --bg: #050706;
@@ -17,7 +12,7 @@
     --green-soft: #79b84a;
     --green-dark: #29451d;
 
-    --line: rgba(184, 255, 101, 0.14);
+    --line: rgba(184,255,101,.14);
 
     --max: 1320px;
 
@@ -39,9 +34,9 @@
 
 html {
 
-    scroll-behavior: smooth;
-
     background: var(--bg);
+
+    scroll-behavior: smooth;
 
 }
 
@@ -52,7 +47,7 @@ body {
     background:
         radial-gradient(
             circle at 50% 0%,
-            rgba(102, 155, 65, .08),
+            rgba(102,155,65,.08),
             transparent 32rem
         ),
         var(--bg);
@@ -77,7 +72,6 @@ body {
 a {
 
     color: inherit;
-
     text-decoration: none;
 
 }
@@ -91,7 +85,6 @@ button {
 ::selection {
 
     background: var(--green);
-
     color: #000;
 
 }
@@ -139,7 +132,7 @@ button {
 
 
 /* =============================================================
-   CANVAS
+   WORLD CANVAS
 ============================================================= */
 
 #world {
@@ -949,21 +942,15 @@ main {
 }
 
 .line-a {
-
     transform: rotate(28deg);
-
 }
 
 .line-b {
-
     transform: rotate(-43deg);
-
 }
 
 .line-c {
-
     transform: rotate(87deg);
-
 }
 
 
@@ -1010,8 +997,7 @@ main {
 
 .problem,
 .loop,
-.modules,
-.thesis {
+.modules {
 
     position: relative;
 
@@ -1019,8 +1005,7 @@ main {
 
 .problem::before,
 .loop::before,
-.modules::before,
-.thesis::before {
+.modules::before {
 
     content: "";
 
@@ -1049,12 +1034,12 @@ main {
 
 
 /* =============================================================
-   PROBLEM
+   THE GAP
 ============================================================= */
 
 .problem {
 
-    min-height: 75svh;
+    min-height: 90svh;
 
 }
 
@@ -1121,11 +1106,16 @@ main {
 
 }
 
+
+/* =============================================================
+   EVIDENCE FIELD
+============================================================= */
+
 .evidence-field {
 
     position: relative;
 
-    min-height: 180px;
+    min-height: 300px;
 
     margin-top: 80px;
 
@@ -1139,34 +1129,81 @@ main {
 
 }
 
-.evidence-field::before {
-
-    content: "";
+.evidence-center {
 
     position: absolute;
 
     left: 50%;
     top: 50%;
 
-    width: 1px;
-    height: 1px;
+    width: 80px;
+    height: 80px;
 
     transform:
         translate(-50%, -50%);
 
-    background: var(--green);
+    border:
+        1px solid
+        rgba(184,255,101,.2);
 
-    box-shadow:
-        0 0 18px 4px
-        rgba(184,255,101,.35);
+    border-radius: 50%;
 
 }
 
-.evidence-field span {
+.evidence-center::before,
+.evidence-center::after {
+
+    content: "";
 
     position: absolute;
 
-    color: var(--dim);
+    inset: -35px;
+
+    border:
+        1px solid
+        rgba(184,255,101,.08);
+
+    border-radius: 50%;
+
+}
+
+.evidence-center::after {
+
+    inset: -65px;
+
+    border-style: dashed;
+
+}
+
+.evidence-center span {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 9px;
+    height: 9px;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background: var(--green);
+
+    box-shadow:
+        0 0 18px var(--green),
+        0 0 50px
+        rgba(184,255,101,.45);
+
+}
+
+.evidence-field > span {
+
+    position: absolute;
+
+    color: #343b35;
 
     font-size: 8px;
 
@@ -1175,55 +1212,87 @@ main {
     letter-spacing: .15em;
 
     transition:
-        transform .8s cubic-bezier(.16,1,.3,1),
+        transform .9s cubic-bezier(.16,1,.3,1),
         color .5s ease;
 
 }
 
-.evidence-field span:nth-child(1) {
-    top: 20%;
+.evidence-field > span:nth-child(2) {
+    top: 18%;
     left: 4%;
 }
 
-.evidence-field span:nth-child(2) {
-    top: 65%;
-    left: 12%;
+.evidence-field > span:nth-child(3) {
+    top: 68%;
+    left: 10%;
 }
 
-.evidence-field span:nth-child(3) {
-    top: 30%;
-    left: 31%;
+.evidence-field > span:nth-child(4) {
+    top: 27%;
+    left: 29%;
 }
 
-.evidence-field span:nth-child(4) {
-    top: 75%;
-    left: 43%;
+.evidence-field > span:nth-child(5) {
+    top: 76%;
+    left: 42%;
 }
 
-.evidence-field span:nth-child(5) {
+.evidence-field > span:nth-child(6) {
     top: 18%;
-    right: 30%;
+    right: 29%;
 }
 
-.evidence-field span:nth-child(6) {
-    top: 55%;
-    right: 17%;
+.evidence-field > span:nth-child(7) {
+    top: 56%;
+    right: 16%;
 }
 
-.evidence-field span:nth-child(7) {
+.evidence-field > span:nth-child(8) {
     top: 82%;
-    right: 4%;
+    right: 3%;
 }
 
-.evidence-field span:nth-child(8) {
-    top: 35%;
+.evidence-field > span:nth-child(9) {
+    top: 34%;
     right: 5%;
 }
 
-.evidence-field:hover span {
 
-    color:
-        rgba(184,255,101,.65);
+/* =============================================================
+   GAP TRANSITION
+============================================================= */
+
+.gap-transition {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    margin-top: 45px;
+
+    color: var(--dim);
+
+    font-size: 7px;
+
+    font-weight: 800;
+
+    letter-spacing: .16em;
+
+    text-align: center;
+
+}
+
+.gap-transition i {
+
+    width: 24px;
+    height: 1px;
+
+    background:
+        rgba(184,255,101,.18);
 
 }
 
@@ -1234,7 +1303,7 @@ main {
 
 .loop {
 
-    min-height: 100svh;
+    min-height: 110svh;
 
 }
 
@@ -1248,7 +1317,7 @@ main {
 
     position: relative;
 
-    height: 390px;
+    height: 500px;
 
     display: grid;
 
@@ -1256,16 +1325,60 @@ main {
 
 }
 
+
+/* LOOP FIELD */
+
+.loop-orbit {
+
+    position: absolute;
+
+    border:
+        1px solid
+        rgba(184,255,101,.12);
+
+    border-radius: 50%;
+
+}
+
+.orbit-large {
+
+    width: 310px;
+    height: 310px;
+
+    animation:
+        spin 22s linear infinite;
+
+}
+
+.orbit-small {
+
+    width: 220px;
+    height: 220px;
+
+    border-style: dashed;
+
+    animation:
+        spin-reverse 16s linear infinite;
+
+}
+
+
+/* CORE */
+
 .loop-core {
 
     position: absolute;
 
-    width: 110px;
-    height: 110px;
+    width: 105px;
+    height: 105px;
+
+    display: grid;
+
+    place-items: center;
 
     border:
         1px solid
-        rgba(184,255,101,.45);
+        rgba(184,255,101,.55);
 
     border-radius: 50%;
 
@@ -1279,55 +1392,50 @@ main {
     animation:
         core-breathe 4s ease-in-out infinite;
 
-}
-
-.loop-core::before,
-.loop-core::after {
-
-    content: "";
-
-    position: absolute;
-
-    inset: -20px;
-
-    border:
-        1px solid
-        rgba(184,255,101,.08);
-
-    border-radius: 50%;
-
-}
-
-.loop-core::after {
-
-    inset: -45px;
-
-    border-style: dashed;
-
-    animation:
-        spin 20s linear infinite;
+    z-index: 3;
 
 }
 
 .loop-core-inner {
 
-    position: absolute;
-
-    inset: 43px;
+    width: 10px;
+    height: 10px;
 
     border-radius: 50%;
 
     background: var(--green);
 
     box-shadow:
-        0 0 20px var(--green),
-        0 0 60px rgba(184,255,101,.5);
+        0 0 18px var(--green),
+        0 0 55px
+        rgba(184,255,101,.65);
 
 }
+
+.loop-core-label {
+
+    position: absolute;
+
+    bottom: -28px;
+
+    color: var(--dim);
+
+    font-size: 7px;
+
+    font-weight: 800;
+
+    letter-spacing: .2em;
+
+}
+
+
+/* LOOP STAGES */
 
 .loop-stage {
 
     position: absolute;
+
+    z-index: 5;
 
     display: flex;
 
@@ -1335,12 +1443,10 @@ main {
 
     gap: 4px;
 
-    z-index: 4;
-
     cursor: pointer;
 
     transition:
-        transform .35s cubic-bezier(.16,1,.3,1),
+        transform .4s cubic-bezier(.16,1,.3,1),
         color .3s ease;
 
 }
@@ -1385,80 +1491,126 @@ main {
 
 .stage-1 {
 
-    top: 15px;
+    top: 35px;
     left: 5%;
 
 }
 
 .stage-2 {
 
-    top: 100px;
-    right: 4%;
+    top: 125px;
+    right: 3%;
 
 }
 
 .stage-3 {
 
-    right: 3%;
-    bottom: 55px;
+    right: 2%;
+    bottom: 75px;
 
 }
 
 .stage-4 {
 
-    bottom: 10px;
-    left: 37%;
+    bottom: 25px;
+    left: 38%;
 
 }
 
 .stage-5 {
 
     left: 2%;
-    bottom: 85px;
+    bottom: 110px;
 
 }
 
-.loop-path {
+
+/* CONNECTIONS */
+
+.loop-connection {
 
     position: absolute;
 
-    width: 55%;
-    height: 55%;
+    z-index: 1;
 
-    border:
-        1px solid
-        rgba(184,255,101,.09);
+    height: 1px;
 
-    border-radius: 50%;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(184,255,101,.32),
+            transparent
+        );
+
+    transform-origin: left center;
+
+    opacity: .65;
 
 }
 
-.path-a {
+.connection-1 {
+
+    width: 115px;
+
+    left: 19%;
+    top: 34%;
 
     transform:
-        rotate(25deg);
+        rotate(28deg);
 
 }
 
-.path-b {
+.connection-2 {
 
-    width: 70%;
-    height: 70%;
+    width: 105px;
+
+    right: 17%;
+    top: 38%;
 
     transform:
-        rotate(-32deg);
+        rotate(148deg);
 
 }
 
-.path-c {
+.connection-3 {
 
-    width: 42%;
-    height: 85%;
+    width: 125px;
+
+    right: 17%;
+    bottom: 31%;
 
     transform:
-        rotate(67deg);
+        rotate(208deg);
 
 }
+
+.connection-4 {
+
+    width: 100px;
+
+    left: 37%;
+    bottom: 20%;
+
+    transform:
+        rotate(260deg);
+
+}
+
+.connection-5 {
+
+    width: 115px;
+
+    left: 15%;
+    bottom: 34%;
+
+    transform:
+        rotate(325deg);
+
+}
+
+
+/* LOOP DESCRIPTION */
 
 .loop-description {
 
@@ -1505,13 +1657,54 @@ main {
 }
 
 
+/* RETURN */
+
+.loop-return {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 80px;
+
+    color: var(--dim);
+
+    font-size: 7px;
+
+    font-weight: 800;
+
+    letter-spacing: .18em;
+
+}
+
+.return-line {
+
+    width: 50px;
+    height: 1px;
+
+    background:
+        rgba(184,255,101,.2);
+
+}
+
+.return-arrow {
+
+    color: var(--green);
+
+    font-size: 18px;
+
+}
+
+
 /* =============================================================
    MODULES
 ============================================================= */
 
 .modules {
 
-    padding-bottom: 130px;
+    padding-bottom: 140px;
 
 }
 
@@ -1543,7 +1736,7 @@ main {
 
     align-items: center;
 
-    min-height: 145px;
+    min-height: 150px;
 
     padding: 25px 0;
 
@@ -1656,18 +1849,14 @@ main {
 
 
 /* =============================================================
-   THESIS
+   FINAL LOOP
 ============================================================= */
 
-.thesis {
+.final-loop {
 
     position: relative;
 
     min-height: 90svh;
-
-    width: 100%;
-
-    margin: 0;
 
     display: grid;
 
@@ -1685,55 +1874,108 @@ main {
     border-top:
         1px solid var(--line);
 
-    border-bottom:
-        1px solid var(--line);
-
 }
 
-.thesis-grid {
+.final-loop-field {
 
     position: absolute;
 
     inset: 0;
 
-    background-image:
-        linear-gradient(
-            rgba(184,255,101,.05) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(184,255,101,.05) 1px,
-            transparent 1px
-        );
+    display: grid;
 
-    background-size:
-        60px 60px;
-
-    mask-image:
-        radial-gradient(
-            circle at center,
-            black,
-            transparent 68%
-        );
+    place-items: center;
 
 }
 
-.thesis-content {
+.final-ring {
+
+    position: absolute;
+
+    border:
+        1px solid
+        rgba(184,255,101,.1);
+
+    border-radius: 50%;
+
+}
+
+.ring-a {
+
+    width: 390px;
+    height: 390px;
+
+    animation:
+        spin 25s linear infinite;
+
+}
+
+.ring-b {
+
+    width: 240px;
+    height: 240px;
+
+    border-style: dashed;
+
+    animation:
+        spin-reverse 17s linear infinite;
+
+}
+
+.final-node {
+
+    position: absolute;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: var(--green);
+
+    box-shadow:
+        0 0 12px var(--green);
+
+}
+
+.node-a {
+
+    transform:
+        translateX(195px);
+
+}
+
+.node-b {
+
+    transform:
+        translateY(-120px);
+
+}
+
+.node-c {
+
+    transform:
+        translateX(-120px);
+
+}
+
+.final-loop-content {
 
     position: relative;
 
+    z-index: 3;
+
     width:
         min(
-            100%,
-            850px
+            900px,
+            100%
         );
 
     text-align: center;
 
 }
 
-.thesis h2 {
+.final-loop h2 {
 
     font-size:
         clamp(
@@ -1742,38 +1984,13 @@ main {
             100px
         );
 
-    line-height: .87;
+    line-height: .88;
 
     letter-spacing: -.06em;
 
 }
 
-.thesis h2 span {
-
-    display: block;
-
-    color: var(--muted);
-
-}
-
-.thesis h3 {
-
-    margin-top: 45px;
-
-    font-size:
-        clamp(
-            28px,
-            7vw,
-            64px
-        );
-
-    line-height: .95;
-
-    letter-spacing: -.05em;
-
-}
-
-.thesis h3 strong {
+.final-loop h2 span {
 
     display: block;
 
@@ -1781,21 +1998,62 @@ main {
 
 }
 
-.thesis-content > p:last-child {
+.final-loop-content > p:not(.kicker) {
 
-    margin-top: 40px;
+    margin-top: 35px;
 
     color: var(--muted);
 
-    font-size: 13px;
-
-    line-height: 1.7;
+    font-size: 16px;
 
 }
 
-.thesis-content > p strong {
+.final-sequence {
 
-    color: var(--text);
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px 10px;
+
+    max-width: 750px;
+
+    margin:
+        45px auto
+        0;
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: .13em;
+
+}
+
+.final-sequence span {
+
+    transition:
+        color .3s ease;
+
+}
+
+.final-sequence span:hover {
+
+    color: var(--green);
+
+}
+
+.final-sequence i {
+
+    color: var(--green);
+
+    font-style: normal;
 
 }
 
@@ -1867,18 +2125,14 @@ footer {
     100% {
 
         opacity: .5;
-
-        transform:
-            scale(.8);
+        transform: scale(.8);
 
     }
 
     50% {
 
         opacity: 1;
-
-        transform:
-            scale(1);
+        transform: scale(1);
 
     }
 
@@ -1911,18 +2165,14 @@ footer {
     0%,
     100% {
 
-        transform:
-            scale(.94);
-
+        transform: scale(.94);
         opacity: .5;
 
     }
 
     50% {
 
-        transform:
-            scale(1.04);
-
+        transform: scale(1.04);
         opacity: 1;
 
     }
@@ -1934,15 +2184,13 @@ footer {
     0%,
     100% {
 
-        transform:
-            scale(.96);
+        transform: scale(.96);
 
     }
 
     50% {
 
-        transform:
-            scale(1.04);
+        transform: scale(1.04);
 
     }
 
@@ -2102,9 +2350,30 @@ footer {
     }
 
 
+    .evidence-field {
+
+        min-height: 330px;
+
+    }
+
+
     .loop-system {
 
-        height: 560px;
+        height: 620px;
+
+    }
+
+    .orbit-large {
+
+        width: 420px;
+        height: 420px;
+
+    }
+
+    .orbit-small {
+
+        width: 285px;
+        height: 285px;
 
     }
 
@@ -2115,22 +2384,16 @@ footer {
 
     }
 
-    .loop-core-inner {
-
-        inset: 58px;
-
-    }
-
     .stage-1 {
 
-        top: 30px;
-        left: 15%;
+        top: 45px;
+        left: 14%;
 
     }
 
     .stage-2 {
 
-        top: 120px;
+        top: 140px;
         right: 13%;
 
     }
@@ -2138,13 +2401,13 @@ footer {
     .stage-3 {
 
         right: 8%;
-        bottom: 70px;
+        bottom: 85px;
 
     }
 
     .stage-4 {
 
-        bottom: 20px;
+        bottom: 25px;
         left: 42%;
 
     }
@@ -2152,7 +2415,7 @@ footer {
     .stage-5 {
 
         left: 9%;
-        bottom: 105px;
+        bottom: 120px;
 
     }
 
@@ -2276,6 +2539,96 @@ footer {
 
         width: 24px;
         height: 24px;
+
+    }
+
+    .evidence-field {
+
+        min-height: 270px;
+
+    }
+
+    .evidence-field > span {
+
+        font-size: 7px;
+
+    }
+
+    .gap-transition {
+
+        gap: 8px;
+
+        font-size: 6px;
+
+    }
+
+    .loop-system {
+
+        height: 460px;
+
+    }
+
+    .orbit-large {
+
+        width: 290px;
+        height: 290px;
+
+    }
+
+    .orbit-small {
+
+        width: 205px;
+        height: 205px;
+
+    }
+
+    .loop-stage b {
+
+        font-size: 9px;
+
+    }
+
+    .loop-stage small {
+
+        font-size: 6px;
+
+    }
+
+    .stage-1 {
+        left: 0;
+    }
+
+    .stage-2 {
+        right: 0;
+    }
+
+    .stage-3 {
+        right: 0;
+    }
+
+    .stage-4 {
+        left: 32%;
+    }
+
+    .stage-5 {
+        left: 0;
+    }
+
+    .loop-return {
+
+        margin-top: 55px;
+
+    }
+
+    .final-loop {
+
+        min-height: 80svh;
+
+    }
+
+    .final-sequence {
+
+        font-size: 7px;
 
     }
 
