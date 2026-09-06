@@ -9,40 +9,59 @@
    MOBILE NAVIGATION
 ============================================================= */
 
-const menuButton = document.getElementById("menu-button");
-const nav = document.getElementById("nav");
+const menuButton =
+    document.getElementById("menu-button");
+
+const nav =
+    document.getElementById("nav");
+
 
 if (menuButton && nav) {
 
-    menuButton.addEventListener("click", () => {
+    menuButton.addEventListener(
+        "click",
+        () => {
 
-        const open = nav.classList.toggle("open");
+            const isOpen =
+                nav.classList.toggle("open");
 
-        menuButton.classList.toggle("active", open);
-
-        menuButton.setAttribute(
-            "aria-expanded",
-            String(open)
-        );
-
-    });
-
-
-    nav.querySelectorAll("a").forEach(link => {
-
-        link.addEventListener("click", () => {
-
-            nav.classList.remove("open");
-            menuButton.classList.remove("active");
+            menuButton.classList.toggle(
+                "active",
+                isOpen
+            );
 
             menuButton.setAttribute(
                 "aria-expanded",
-                "false"
+                String(isOpen)
             );
 
-        });
+        }
+    );
 
-    });
+
+    nav.querySelectorAll("a").forEach(
+        link => {
+
+            link.addEventListener(
+                "click",
+                () => {
+
+                    nav.classList.remove("open");
+
+                    menuButton.classList.remove(
+                        "active"
+                    );
+
+                    menuButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                }
+            );
+
+        }
+    );
 
 }
 
@@ -51,47 +70,74 @@ if (menuButton && nav) {
    LOOP INTELLIGENCE
 ============================================================= */
 
-const stages = document.querySelectorAll(".loop-stage");
+const stages =
+    document.querySelectorAll(".loop-stage");
 
-const loopNumber = document.getElementById("loop-number");
-const loopTitle = document.getElementById("loop-title");
-const loopCopy = document.getElementById("loop-copy");
+const loopNumber =
+    document.getElementById("loop-number");
+
+const loopTitle =
+    document.getElementById("loop-title");
+
+const loopCopy =
+    document.getElementById("loop-copy");
+
 
 const stageData = {
 
     OBSERVE: {
+
         number: "01",
+
         title: "OBSERVE",
+
         copy:
             "Capture what is actually visible without prematurely deciding what it means."
+
     },
 
     ASSESS: {
+
         number: "02",
+
         title: "ASSESS",
+
         copy:
             "Synthesize observable evidence into safety signals while preserving uncertainty."
+
     },
 
     DECIDE: {
+
         number: "03",
+
         title: "DECIDE",
+
         copy:
             "Explore intervention possibilities while keeping the human decision-maker in control."
+
     },
 
     ACT: {
+
         number: "04",
+
         title: "ACT",
+
         copy:
             "Turn an approved decision into structured civic action that can move beyond the interface."
+
     },
 
     LEARN: {
+
         number: "05",
+
         title: "LEARN",
+
         copy:
             "Preserve location history, re-observe the street and measure whether conditions changed."
+
     }
 
 };
@@ -101,27 +147,48 @@ function activateStage(stage) {
 
     if (!stage) return;
 
+
     stages.forEach(item => {
+
         item.classList.remove("active");
+
     });
+
 
     stage.classList.add("active");
 
-    const key = stage.dataset.stage;
-    const data = stageData[key];
+
+    const key =
+        stage.dataset.stage;
+
+    const data =
+        stageData[key];
+
 
     if (!data) return;
 
+
     if (loopNumber) {
-        loopNumber.textContent = data.number;
+
+        loopNumber.textContent =
+            data.number;
+
     }
+
 
     if (loopTitle) {
-        loopTitle.textContent = data.title;
+
+        loopTitle.textContent =
+            data.title;
+
     }
 
+
     if (loopCopy) {
-        loopCopy.textContent = data.copy;
+
+        loopCopy.textContent =
+            data.copy;
+
     }
 
 }
@@ -129,9 +196,14 @@ function activateStage(stage) {
 
 stages.forEach(stage => {
 
-    stage.addEventListener("click", () => {
-        activateStage(stage);
-    });
+    stage.addEventListener(
+        "click",
+        () => {
+
+            activateStage(stage);
+
+        }
+    );
 
 });
 
@@ -140,78 +212,128 @@ if (stages.length) {
 
     let currentStage = 0;
 
-    activateStage(stages[0]);
+    activateStage(
+        stages[0]
+    );
 
-    /*
-       Automatic cycling is intentionally slow.
-       The user can interrupt it by touching a stage.
-    */
 
-    const cycle = setInterval(() => {
+    setInterval(
+        () => {
 
-        if (
-            document.hidden ||
-            window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        ) {
-            return;
-        }
+            if (
+                document.hidden ||
+                window.matchMedia(
+                    "(prefers-reduced-motion: reduce)"
+                ).matches
+            ) {
 
-        currentStage =
-            (currentStage + 1) % stages.length;
+                return;
 
-        activateStage(stages[currentStage]);
+            }
 
-    }, 4200);
+
+            currentStage =
+                (currentStage + 1)
+                % stages.length;
+
+
+            activateStage(
+                stages[currentStage]
+            );
+
+        },
+        4200
+    );
 
 }
 
 
 /* =============================================================
-   FIELD CANVAS
+   POINTER / TOUCH FIELD
 ============================================================= */
 
-const canvas = document.getElementById("world");
+const canvas =
+    document.getElementById("world");
+
 
 if (canvas) {
 
-    const ctx = canvas.getContext("2d", {
-        alpha: true
-    });
+    const ctx =
+        canvas.getContext(
+            "2d",
+            {
+                alpha: true
+            }
+        );
+
 
     if (ctx) {
 
         let width = 0;
+
         let height = 0;
+
         let dpr = 1;
 
         let particles = [];
 
-        let mouseX = 0.5;
-        let mouseY = 0.5;
+        let pointerX = .5;
 
-        let targetX = 0.5;
-        let targetY = 0.5;
+        let pointerY = .5;
+
+        let targetX = .5;
+
+        let targetY = .5;
 
         let animationFrame = 0;
 
+
         const reducedMotion =
-            window.matchMedia("(prefers-reduced-motion: reduce)");
+            window.matchMedia(
+                "(prefers-reduced-motion: reduce)"
+            );
+
+
+        /* =====================================================
+           RESIZE
+        ====================================================== */
 
         function resize() {
 
-            dpr = Math.min(
-                window.devicePixelRatio || 1,
-                1.5
-            );
+            dpr =
+                Math.min(
+                    window.devicePixelRatio || 1,
+                    1.5
+                );
 
-            width = window.innerWidth;
-            height = window.innerHeight;
 
-            canvas.width = Math.floor(width * dpr);
-            canvas.height = Math.floor(height * dpr);
+            width =
+                window.innerWidth;
 
-            canvas.style.width = `${width}px`;
-            canvas.style.height = `${height}px`;
+
+            height =
+                window.innerHeight;
+
+
+            canvas.width =
+                Math.floor(
+                    width * dpr
+                );
+
+
+            canvas.height =
+                Math.floor(
+                    height * dpr
+                );
+
+
+            canvas.style.width =
+                `${width}px`;
+
+
+            canvas.style.height =
+                `${height}px`;
+
 
             ctx.setTransform(
                 dpr,
@@ -222,40 +344,62 @@ if (canvas) {
                 0
             );
 
+
             createParticles();
 
         }
 
 
+        /* =====================================================
+           PARTICLES
+        ====================================================== */
+
         function createParticles() {
 
-            /*
-               Keep mobile intentionally light.
-            */
+            const amount =
+                width < 700
+                    ? 18
+                    : 42;
 
-            const density =
-                width < 700 ? 20 : 42;
 
             particles = [];
 
-            for (let i = 0; i < density; i++) {
+
+            for (
+                let i = 0;
+                i < amount;
+                i++
+            ) {
 
                 particles.push({
 
-                    x: Math.random() * width,
-                    y: Math.random() * height,
+                    x:
+                        Math.random()
+                        * width,
+
+                    y:
+                        Math.random()
+                        * height,
 
                     radius:
-                        Math.random() * 1.1 + .25,
+                        Math.random()
+                        * 1.1
+                        + .25,
 
                     alpha:
-                        Math.random() * .35 + .08,
+                        Math.random()
+                        * .28
+                        + .06,
 
                     speed:
-                        Math.random() * .12 + .025,
+                        Math.random()
+                        * .12
+                        + .025,
 
                     phase:
-                        Math.random() * Math.PI * 2
+                        Math.random()
+                        * Math.PI
+                        * 2
 
                 });
 
@@ -264,10 +408,49 @@ if (canvas) {
         }
 
 
-        function updatePointer(x, y) {
+        /* =====================================================
+           POINTER
+        ====================================================== */
 
-            targetX = x / width;
-            targetY = y / height;
+        function updatePointer(
+            x,
+            y
+        ) {
+
+            targetX =
+                Math.max(
+                    0,
+                    Math.min(
+                        1,
+                        x / width
+                    )
+                );
+
+
+            targetY =
+                Math.max(
+                    0,
+                    Math.min(
+                        1,
+                        y / height
+                    )
+                );
+
+
+            document.documentElement
+                .style
+                .setProperty(
+                    "--pointer-x",
+                    targetX
+                );
+
+
+            document.documentElement
+                .style
+                .setProperty(
+                    "--pointer-y",
+                    targetY
+                );
 
         }
 
@@ -282,36 +465,79 @@ if (canvas) {
                 );
 
             },
-            { passive: true }
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "touchmove",
+            event => {
+
+                const touch =
+                    event.touches?.[0];
+
+
+                if (!touch) return;
+
+
+                updatePointer(
+                    touch.clientX,
+                    touch.clientY
+                );
+
+            },
+            {
+                passive: true
+            }
         );
 
 
         window.addEventListener(
             "resize",
             resize,
-            { passive: true }
+            {
+                passive: true
+            }
         );
 
 
-        function drawGrid(time) {
+        /* =====================================================
+           GRID
+        ====================================================== */
+
+        function drawGrid() {
 
             const spacing =
-                width < 700 ? 65 : 90;
+                width < 700
+                    ? 65
+                    : 90;
+
 
             const offsetX =
-                (mouseX - .5) * 12;
+                (pointerX - .5)
+                * 12;
+
 
             const offsetY =
-                (mouseY - .5) * 12;
+                (pointerY - .5)
+                * 12;
+
 
             ctx.save();
 
-            ctx.globalAlpha = .18;
+
+            ctx.globalAlpha =
+                .18;
+
 
             ctx.strokeStyle =
                 "rgba(184,255,101,.09)";
 
+
             ctx.lineWidth = 1;
+
 
             for (
                 let x = -spacing;
@@ -321,19 +547,23 @@ if (canvas) {
 
                 ctx.beginPath();
 
+
                 ctx.moveTo(
                     x + offsetX,
                     0
                 );
+
 
                 ctx.lineTo(
                     x + offsetX,
                     height
                 );
 
+
                 ctx.stroke();
 
             }
+
 
             for (
                 let y = -spacing;
@@ -343,52 +573,81 @@ if (canvas) {
 
                 ctx.beginPath();
 
+
                 ctx.moveTo(
                     0,
                     y + offsetY
                 );
+
 
                 ctx.lineTo(
                     width,
                     y + offsetY
                 );
 
+
                 ctx.stroke();
 
             }
+
 
             ctx.restore();
 
         }
 
 
+        /* =====================================================
+           PARTICLE FIELD
+        ====================================================== */
+
         function drawParticles(time) {
 
-            for (const particle of particles) {
+            for (
+                const particle
+                of particles
+            ) {
 
-                particle.y -= particle.speed;
+                particle.y -=
+                    particle.speed;
 
-                if (particle.y < -5) {
-                    particle.y = height + 5;
-                    particle.x = Math.random() * width;
+
+                if (
+                    particle.y < -5
+                ) {
+
+                    particle.y =
+                        height + 5;
+
+                    particle.x =
+                        Math.random()
+                        * width;
+
                 }
+
 
                 const drift =
                     Math.sin(
-                        time * .00035 +
-                        particle.phase
-                    ) * .35;
+                        time * .00035
+                        + particle.phase
+                    )
+                    * .35;
+
 
                 const x =
-                    particle.x +
-                    drift +
-                    (mouseX - .5) * 8;
+                    particle.x
+                    + drift
+                    + (pointerX - .5)
+                    * 8;
+
 
                 const y =
-                    particle.y +
-                    (mouseY - .5) * 8;
+                    particle.y
+                    + (pointerY - .5)
+                    * 8;
+
 
                 ctx.beginPath();
+
 
                 ctx.arc(
                     x,
@@ -398,8 +657,15 @@ if (canvas) {
                     Math.PI * 2
                 );
 
+
                 ctx.fillStyle =
-                    `rgba(184,255,101,${particle.alpha})`;
+                    `rgba(
+                        184,
+                        255,
+                        101,
+                        ${particle.alpha}
+                    )`;
+
 
                 ctx.fill();
 
@@ -408,28 +674,106 @@ if (canvas) {
         }
 
 
+        /* =====================================================
+           INTELLIGENT SIGNAL FIELD
+        ====================================================== */
+
         function drawSignal(time) {
 
+            /*
+               The field evolves according to
+               how far the user has entered the page.
+
+               HERO
+               ↓
+               OBSERVATION
+               ↓
+               CONVERGENCE
+               ↓
+               INTERPRETATION
+            */
+
+
+            const maxScroll =
+                Math.max(
+                    document.documentElement
+                        .scrollHeight
+                    - window.innerHeight,
+                    1
+                );
+
+
+            const scroll =
+                window.scrollY
+                / maxScroll;
+
+
+            const progress =
+                Math.min(
+                    Math.max(
+                        scroll * 2.8,
+                        0
+                    ),
+                    1
+                );
+
+
             const cx =
-                width * (.5 + (mouseX - .5) * .035);
+                width *
+                (
+                    .5
+                    + (pointerX - .5)
+                    * .035
+                );
+
 
             const cy =
-                height * (.47 + (mouseY - .5) * .035);
+                height *
+                (
+                    .47
+                    + (pointerY - .5)
+                    * .035
+                );
+
+
+            const baseRadius =
+                Math.min(
+                    width,
+                    height
+                )
+                *
+                (
+                    width < 700
+                        ? .24
+                        : .27
+                );
+
 
             const radius =
-                Math.min(width, height) *
-                (width < 700 ? .24 : .27);
+                baseRadius
+                *
+                (
+                    1
+                    + progress * .25
+                );
+
 
             const pulse =
-                Math.sin(time * .001) * 5;
+                Math.sin(
+                    time * .001
+                )
+                * 5;
+
 
             ctx.save();
 
-            /*
-               Outer signal field
-            */
+
+            /* =================================================
+               PRIMARY FIELD
+            ================================================== */
 
             ctx.beginPath();
+
 
             ctx.arc(
                 cx,
@@ -439,60 +783,331 @@ if (canvas) {
                 Math.PI * 2
             );
 
+
             ctx.strokeStyle =
-                "rgba(184,255,101,.08)";
+                `rgba(
+                    184,
+                    255,
+                    101,
+                    ${.08 + progress * .08}
+                )`;
+
 
             ctx.lineWidth = 1;
+
 
             ctx.stroke();
 
 
-            /*
-               Inner signal
-            */
+            /* =================================================
+               SECONDARY FIELD
+            ================================================== */
 
             ctx.beginPath();
+
 
             ctx.arc(
                 cx,
                 cy,
-                radius * .58,
+                radius *
+                (
+                    .58
+                    + progress * .18
+                ),
                 0,
                 Math.PI * 2
             );
 
+
             ctx.strokeStyle =
                 "rgba(184,255,101,.06)";
 
+
             ctx.stroke();
 
 
-            /*
-               Crosshair
-            */
+            /* =================================================
+               CROSS AXIS
+            ================================================== */
 
             ctx.strokeStyle =
-                "rgba(184,255,101,.07)";
+                "rgba(184,255,101,.065)";
+
 
             ctx.beginPath();
 
-            ctx.moveTo(cx - radius * 1.3, cy);
-            ctx.lineTo(cx + radius * 1.3, cy);
 
-            ctx.moveTo(cx, cy - radius * 1.3);
-            ctx.lineTo(cx, cy + radius * 1.3);
+            ctx.moveTo(
+                cx - radius * 1.35,
+                cy
+            );
+
+
+            ctx.lineTo(
+                cx + radius * 1.35,
+                cy
+            );
+
+
+            ctx.moveTo(
+                cx,
+                cy - radius * 1.35
+            );
+
+
+            ctx.lineTo(
+                cx,
+                cy + radius * 1.35
+            );
+
 
             ctx.stroke();
 
 
-            /*
-               Rotating scan arc
-            */
+            /* =================================================
+               SIGNAL TRACES
+            ================================================== */
+
+            const signalCount =
+                width < 700
+                    ? 6
+                    : 10;
+
+
+            for (
+                let i = 0;
+                i < signalCount;
+                i++
+            ) {
+
+                const angle =
+                    (
+                        i
+                        / signalCount
+                    )
+                    * Math.PI
+                    * 2;
+
+
+                const distance =
+                    radius
+                    *
+                    (
+                        1.15
+                        +
+                        Math.sin(
+                            time * .00045
+                            + i * 1.7
+                        )
+                        * .12
+                    );
+
+
+                const startX =
+                    cx
+                    +
+                    Math.cos(angle)
+                    * distance;
+
+
+                const startY =
+                    cy
+                    +
+                    Math.sin(angle)
+                    * distance;
+
+
+                const convergence =
+                    progress * .72;
+
+
+                const endX =
+                    startX
+                    +
+                    (
+                        cx
+                        - startX
+                    )
+                    * convergence;
+
+
+                const endY =
+                    startY
+                    +
+                    (
+                        cy
+                        - startY
+                    )
+                    * convergence;
+
+
+                ctx.beginPath();
+
+
+                ctx.moveTo(
+                    startX,
+                    startY
+                );
+
+
+                const controlX =
+                    (
+                        startX
+                        + endX
+                    ) / 2
+                    +
+                    Math.sin(
+                        time * .0005
+                        + i
+                    )
+                    * 30;
+
+
+                const controlY =
+                    (
+                        startY
+                        + endY
+                    ) / 2
+                    +
+                    Math.cos(
+                        time * .0004
+                        + i
+                    )
+                    * 30;
+
+
+                ctx.quadraticCurveTo(
+                    controlX,
+                    controlY,
+                    endX,
+                    endY
+                );
+
+
+                ctx.strokeStyle =
+                    `rgba(
+                        184,
+                        255,
+                        101,
+                        ${.07 + progress * .17}
+                    )`;
+
+
+                ctx.lineWidth =
+                    progress > .5
+                        ? 1.2
+                        : .7;
+
+
+                ctx.stroke();
+
+            }
+
+
+            /* =================================================
+               CONVERGENCE NODE
+            ================================================== */
+
+            const nodeRadius =
+                3
+                + progress * 7;
+
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+                cx,
+                cy,
+                nodeRadius,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.fillStyle =
+                `rgba(
+                    184,
+                    255,
+                    101,
+                    ${.5 + progress * .4}
+                )`;
+
+
+            ctx.shadowBlur =
+                12
+                + progress * 22;
+
+
+            ctx.shadowColor =
+                "rgba(184,255,101,.8)";
+
+
+            ctx.fill();
+
+
+            /* =================================================
+               INTERPRETATION RING
+            ================================================== */
+
+            if (
+                progress > .25
+            ) {
+
+                const interpretationRadius =
+                    radius
+                    *
+                    (
+                        .72
+                        + progress * .18
+                    );
+
+
+                const rotation =
+                    time * .00015;
+
+
+                ctx.beginPath();
+
+
+                ctx.arc(
+                    cx,
+                    cy,
+                    interpretationRadius,
+                    rotation,
+                    rotation
+                    + Math.PI * .7
+                );
+
+
+                ctx.strokeStyle =
+                    `rgba(
+                        184,
+                        255,
+                        101,
+                        ${progress * .35}
+                    )`;
+
+
+                ctx.lineWidth =
+                    1.5;
+
+
+                ctx.stroke();
+
+            }
+
+
+            /* =================================================
+               SCAN ARC
+            ================================================== */
 
             const angle =
                 time * .00018;
 
+
             ctx.beginPath();
+
 
             ctx.arc(
                 cx,
@@ -502,25 +1117,44 @@ if (canvas) {
                 angle + .55
             );
 
+
             ctx.strokeStyle =
                 "rgba(184,255,101,.28)";
 
-            ctx.lineWidth = 1.5;
+
+            ctx.lineWidth =
+                1.5;
+
 
             ctx.stroke();
+
 
             ctx.restore();
 
         }
 
 
+        /* =====================================================
+           RENDER LOOP
+        ====================================================== */
+
         function render(time) {
 
-            mouseX +=
-                (targetX - mouseX) * .035;
+            pointerX +=
+                (
+                    targetX
+                    - pointerX
+                )
+                * .035;
 
-            mouseY +=
-                (targetY - mouseY) * .035;
+
+            pointerY +=
+                (
+                    targetY
+                    - pointerY
+                )
+                * .035;
+
 
             ctx.clearRect(
                 0,
@@ -529,25 +1163,39 @@ if (canvas) {
                 height
             );
 
-            drawGrid(time);
+
+            drawGrid();
+
             drawParticles(time);
+
             drawSignal(time);
 
-            if (!document.hidden) {
+
+            if (
+                !document.hidden
+            ) {
 
                 animationFrame =
-                    requestAnimationFrame(render);
+                    requestAnimationFrame(
+                        render
+                    );
 
             }
 
         }
 
 
+        /* =====================================================
+           TAB VISIBILITY
+        ====================================================== */
+
         document.addEventListener(
             "visibilitychange",
             () => {
 
-                if (document.hidden) {
+                if (
+                    document.hidden
+                ) {
 
                     cancelAnimationFrame(
                         animationFrame
@@ -556,7 +1204,9 @@ if (canvas) {
                 } else {
 
                     animationFrame =
-                        requestAnimationFrame(render);
+                        requestAnimationFrame(
+                            render
+                        );
 
                 }
 
@@ -564,12 +1214,21 @@ if (canvas) {
         );
 
 
+        /* =====================================================
+           START
+        ====================================================== */
+
         resize();
 
-        if (!reducedMotion.matches) {
+
+        if (
+            !reducedMotion.matches
+        ) {
 
             animationFrame =
-                requestAnimationFrame(render);
+                requestAnimationFrame(
+                    render
+                );
 
         }
 
@@ -579,43 +1238,164 @@ if (canvas) {
 
 
 /* =============================================================
-   MODULE HOVER / TOUCH FEEDBACK
+   EVIDENCE FIELD INTERACTION
 ============================================================= */
 
-document.querySelectorAll(".module").forEach(module => {
+const evidenceField =
+    document.querySelector(
+        ".evidence-field"
+    );
 
-    module.addEventListener(
-        "pointerenter",
-        () => {
 
-            document.body.dataset.focus =
-                module.dataset.module || "";
+if (evidenceField) {
 
+    evidenceField.addEventListener(
+        "pointermove",
+        event => {
+
+            const rect =
+                evidenceField
+                    .getBoundingClientRect();
+
+
+            const x =
+                event.clientX
+                - rect.left;
+
+
+            const y =
+                event.clientY
+                - rect.top;
+
+
+            const centerX =
+                rect.width / 2;
+
+
+            const centerY =
+                rect.height / 2;
+
+
+            const dx =
+                (
+                    centerX
+                    - x
+                )
+                * .08;
+
+
+            const dy =
+                (
+                    centerY
+                    - y
+                )
+                * .08;
+
+
+            evidenceField
+                .querySelectorAll("span")
+                .forEach(
+                    (
+                        item,
+                        index
+                    ) => {
+
+                        const strength =
+                            1
+                            + (
+                                index % 3
+                            )
+                            * .3;
+
+
+                        item.style.transform =
+                            `translate(
+                                ${dx * strength}px,
+                                ${dy * strength}px
+                            )`;
+
+                    }
+                );
+
+        },
+        {
+            passive: true
         }
     );
 
-    module.addEventListener(
+
+    evidenceField.addEventListener(
         "pointerleave",
         () => {
 
-            delete document.body.dataset.focus;
+            evidenceField
+                .querySelectorAll("span")
+                .forEach(
+                    item => {
+
+                        item.style.transform =
+                            "";
+
+                    }
+                );
 
         }
     );
 
-});
+}
+
+
+/* =============================================================
+   MODULE FOCUS
+============================================================= */
+
+document
+    .querySelectorAll(".module")
+    .forEach(
+        module => {
+
+            module.addEventListener(
+                "pointerenter",
+                () => {
+
+                    document.body.dataset.focus =
+                        module.dataset.module
+                        || "";
+
+                }
+            );
+
+
+            module.addEventListener(
+                "pointerleave",
+                () => {
+
+                    delete
+                        document.body
+                            .dataset
+                            .focus;
+
+                }
+            );
+
+        }
+    );
 
 
 /* =============================================================
    INITIALIZATION
 ============================================================= */
 
-document.documentElement.classList.add("ixvyn-ready");
+document.documentElement
+    .classList
+    .add("ixvyn-ready");
+
 
 console.log(
     "%cIXVYN",
     "color:#b8ff65;font-weight:800;font-size:18px"
 );
+
 
 console.log(
     "Continuous civic intelligence initialized."
