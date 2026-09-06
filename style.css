@@ -1422,3 +1422,68 @@ footer {
         transition-duration: .001ms !important;
     }
 }
+/* =============================================================
+   IXVYN LOTUS SIGNATURE
+============================================================= */
+
+.ixvyn-lotus {
+    position: absolute;
+    z-index: 6;
+
+    width: 30px;
+    height: 30px;
+
+    display: grid;
+    place-items: center;
+
+    opacity: .62;
+
+    transform:
+        translate(
+            calc((var(--pointer-x, .5) - .5) * 12px),
+            calc((var(--pointer-y, .5) - .5) * 12px)
+        );
+
+    transition:
+        transform .8s cubic-bezier(.16,1,.3,1),
+        opacity .5s ease;
+}
+
+.ixvyn-lotus svg {
+    width: 100%;
+    height: 100%;
+
+    fill: none;
+    stroke: var(--green);
+
+    stroke-width: 1.2;
+
+    filter:
+        drop-shadow(
+            0 0 7px rgba(184,255,101,.45)
+        );
+}
+
+.ixvyn-lotus::after {
+    content: "";
+
+    position: absolute;
+    inset: 7px;
+
+    border-radius: 50%;
+
+    background: rgba(184,255,101,.12);
+
+    filter: blur(8px);
+
+    z-index: -1;
+}
+
+@media (max-width: 700px) {
+
+    .ixvyn-lotus {
+        width: 24px;
+        height: 24px;
+    }
+
+}
