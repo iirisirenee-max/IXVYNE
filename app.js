@@ -1,9 +1,31 @@
 "use strict";
 
+/* ============================================================
+   IXVYN — CIVIC INSTRUMENT ENGINE
 
-/* =============================================================
+   Architecture:
+
+   pointer
+       ↓
+   field
+       ↓
+   scroll
+       ↓
+   convergence
+       ↓
+   interpretation
+       ↓
+   recurrence
+
+   Lightweight Canvas.
+   No libraries.
+   Mobile-aware.
+============================================================ */
+
+
+/* ============================================================
    MOBILE NAVIGATION
-============================================================= */
+============================================================ */
 
 const menuButton =
     document.getElementById("menu-button");
@@ -11,60 +33,51 @@ const menuButton =
 const nav =
     document.getElementById("nav");
 
-
 if (menuButton && nav) {
 
-    menuButton.addEventListener(
-        "click",
-        () => {
+    menuButton.addEventListener("click", () => {
 
-            const isOpen =
-                nav.classList.toggle("open");
+        const open =
+            nav.classList.toggle("open");
 
-            menuButton.classList.toggle(
-                "active",
-                isOpen
+        menuButton.classList.toggle(
+            "active",
+            open
+        );
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            String(open)
+        );
+
+    });
+
+
+    nav.querySelectorAll("a").forEach(link => {
+
+        link.addEventListener("click", () => {
+
+            nav.classList.remove("open");
+
+            menuButton.classList.remove(
+                "active"
             );
 
             menuButton.setAttribute(
                 "aria-expanded",
-                String(isOpen)
+                "false"
             );
 
-        }
-    );
+        });
 
-
-    nav.querySelectorAll("a").forEach(
-        link => {
-
-            link.addEventListener(
-                "click",
-                () => {
-
-                    nav.classList.remove("open");
-
-                    menuButton.classList.remove(
-                        "active"
-                    );
-
-                    menuButton.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
-
-                }
-            );
-
-        }
-    );
+    });
 
 }
 
 
-/* =============================================================
+/* ============================================================
    LOOP INTELLIGENCE
-============================================================= */
+============================================================ */
 
 const stages =
     document.querySelectorAll(".loop-stage");
@@ -78,79 +91,62 @@ const loopTitle =
 const loopCopy =
     document.getElementById("loop-copy");
 
+const loopCore =
+    document.getElementById("loop-core");
+
 
 const stageData = {
 
     OBSERVE: {
-
         number: "01",
-
         title: "OBSERVE",
-
         copy:
             "Capture what is actually visible without prematurely deciding what it means."
-
     },
 
     ASSESS: {
-
         number: "02",
-
         title: "ASSESS",
-
         copy:
             "Synthesize observable evidence into safety signals while preserving uncertainty."
-
     },
 
     DECIDE: {
-
         number: "03",
-
         title: "DECIDE",
-
         copy:
             "Explore intervention possibilities while keeping the human decision-maker in control."
-
     },
 
     ACT: {
-
         number: "04",
-
         title: "ACT",
-
         copy:
             "Turn an approved decision into structured civic action that can move beyond the interface."
-
     },
 
     LEARN: {
-
         number: "05",
-
         title: "LEARN",
-
         copy:
             "Preserve location history, re-observe the street and measure whether conditions changed."
-
     }
 
 };
+
+
+let currentStage = 0;
 
 
 function activateStage(stage) {
 
     if (!stage) return;
 
+    stages.forEach(item => {
 
-    stages.forEach(
-        item => {
+        item.classList.remove("active");
 
-            item.classList.remove("active");
-
-        }
-    );
+    });
 
 
     stage.classList.add("active");
@@ -162,131 +158,501 @@ function activateStage(stage) {
     const data =
         stageData[key];
 
-
     if (!data) return;
 
 
     if (loopNumber) {
-
         loopNumber.textContent =
             data.number;
-
     }
-
 
     if (loopTitle) {
-
         loopTitle.textContent =
             data.title;
+    }
 
+    if (loopCopy) {
+        loopCopy.textContent =
+            data.copy;
     }
 
 
-    if (loopCopy) {
+    /*
+       Make the core react to the active
+       instrument.
+    */
 
-        loopCopy.textContent =
-            data.copy;
+    if (loopCore) {
+
+        const intensity =
+            currentStage === 0
+                ? 1
+                : 1.08;
+
+        loopCore.style.transform =
+            `translate(-50%, -50%) scale(${intensity})`;
 
     }
 
 }
 
 
-/* =============================================================
-   LOOP AUTO-CYCLE
-============================================================= */
+stages.forEach((stage, index) => {
 
-let currentStage = 0;
+    stage.addEventListener(
+        "click",
+        () => {
+
+            currentStage = index;
+
+            activateStage(stage);
+
+        }
+    );
+
+});
+
+
+/* ============================================================
+   AUTO LOOP
+============================================================ */
 
 let loopTimer = null;
+
+const reduceMotion =
+    window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    );
 
 
 function startLoopCycle() {
 
-    if (
-        window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches
-    ) {
-
+    if (reduceMotion.matches) {
         return;
-
     }
-
 
     if (loopTimer) {
-
         clearInterval(loopTimer);
-
     }
 
-
     loopTimer =
-        setInterval(
-            () => {
+        setInterval(() => {
 
-                if (
-                    document.hidden ||
-                    !stages.length
-                ) {
+            if (
+                document.hidden ||
+                !stages.length
+            ) {
+                return;
+            }
 
-                    return;
+            currentStage =
+                (
+                    currentStage + 1
+                ) % stages.length;
 
-                }
+            activateStage(
+                stages[currentStage]
+            );
 
-
-                currentStage =
-                    (
-                        currentStage + 1
-                    )
-                    %
-                    stages.length;
-
-
-                activateStage(
-                    stages[currentStage]
-                );
-
-            },
-            4200
-        );
+        }, 4200);
 
 }
 
 
-stages.forEach(
-    (stage, index) => {
-
-        stage.addEventListener(
-            "click",
-            () => {
-
-                currentStage =
-                    index;
-
-                activateStage(stage);
-
-            }
-        );
-
-    }
-);
-
-
 if (stages.length) {
 
-    activateStage(
-        stages[0]
-    );
+    activateStage(stages[0]);
 
     startLoopCycle();
 
 }
 
 
-/* =============================================================
-   POINTER / TOUCH FIELD
-============================================================= */
+/* ============================================================
+   GLOBAL POINTER STATE
+============================================================ */
+
+let pointerTargetX = .5;
+let pointerTargetY = .5;
+
+let pointerX = .5;
+let pointerY = .5;
+
+
+function setPointer(x, y) {
+
+    pointerTargetX =
+        Math.max(
+            0,
+            Math.min(
+                1,
+                x / Math.max(window.innerWidth, 1)
+            )
+        );
+
+    pointerTargetY =
+        Math.max(
+            0,
+            Math.min(
+                1,
+                y / Math.max(window.innerHeight, 1)
+            )
+        );
+
+
+    document.documentElement.style
+        .setProperty(
+            "--pointer-x",
+            pointerTargetX
+        );
+
+    document.documentElement.style
+        .setProperty(
+            "--pointer-y",
+            pointerTargetY
+        );
+
+}
+
+
+window.addEventListener(
+    "pointermove",
+    event => {
+
+        setPointer(
+            event.clientX,
+            event.clientY
+        );
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+/*
+   Touch movement deliberately uses a light
+   response. We do NOT hijack scrolling.
+*/
+
+window.addEventListener(
+    "touchmove",
+    event => {
+
+        const touch =
+            event.touches?.[0];
+
+        if (!touch) return;
+
+        setPointer(
+            touch.clientX,
+            touch.clientY
+        );
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+/* ============================================================
+   SCROLL INTELLIGENCE
+============================================================ */
+
+let scrollProgress = 0;
+
+let scrollVelocity = 0;
+
+let lastScrollY =
+    window.scrollY;
+
+let lastScrollTime =
+    performance.now();
+
+
+function updateScrollState() {
+
+    const maxScroll =
+        Math.max(
+            document.documentElement.scrollHeight
+                - window.innerHeight,
+            1
+        );
+
+    const now =
+        performance.now();
+
+    const current =
+        window.scrollY;
+
+    const delta =
+        current - lastScrollY;
+
+    const dt =
+        Math.max(
+            now - lastScrollTime,
+            1
+        );
+
+    scrollVelocity =
+        Math.max(
+            -1,
+            Math.min(
+                1,
+                (delta / dt) * 16
+            )
+        );
+
+    scrollProgress =
+        Math.max(
+            0,
+            Math.min(
+                1,
+                current / maxScroll
+            )
+        );
+
+    lastScrollY = current;
+    lastScrollTime = now;
+
+}
+
+
+window.addEventListener(
+    "scroll",
+    updateScrollState,
+    {
+        passive: true
+    }
+);
+
+updateScrollState();
+
+
+/* ============================================================
+   EVIDENCE FIELD
+   Fragmented → converged.
+============================================================ */
+
+const evidenceField =
+    document.querySelector(
+        ".evidence-field"
+    );
+
+if (evidenceField) {
+
+    const evidenceItems =
+        evidenceField.querySelectorAll(
+            ":scope > span"
+        );
+
+
+    function updateEvidenceField() {
+
+        const rect =
+            evidenceField.getBoundingClientRect();
+
+        const viewport =
+            window.innerHeight;
+
+        /*
+           0 = field is below viewport
+           1 = field is central in viewport
+           2 = field has passed
+        */
+
+        const center =
+            rect.top + rect.height / 2;
+
+        const distance =
+            Math.abs(
+                viewport / 2 - center
+            );
+
+        const visibility =
+            Math.max(
+                0,
+                1 -
+                distance /
+                (viewport * .85)
+            );
+
+
+        /*
+           The closer the field gets
+           to the observer, the more
+           signals converge.
+        */
+
+        const convergence =
+            Math.max(
+                0,
+                Math.min(
+                    1,
+                    visibility
+                )
+            );
+
+
+        evidenceItems.forEach(
+            (item, index) => {
+
+                const rectItem =
+                    item.getBoundingClientRect();
+
+                const itemX =
+                    rectItem.left
+                    - rect.left
+                    + rectItem.width / 2;
+
+                const itemY =
+                    rectItem.top
+                    - rect.top
+                    + rectItem.height / 2;
+
+
+                const centerX =
+                    rect.width / 2;
+
+                const centerY =
+                    rect.height / 2;
+
+
+                const dx =
+                    centerX - itemX;
+
+                const dy =
+                    centerY - itemY;
+
+
+                /*
+                   Scattered state:
+                   labels remain where they are.
+
+                   Converged state:
+                   labels are gently pulled
+                   toward the intelligence node.
+                */
+
+                const pull =
+                    convergence * .82;
+
+
+                const offsetX =
+                    dx * pull;
+
+                const offsetY =
+                    dy * pull;
+
+
+                const depth =
+                    (
+                        index % 3
+                    ) * .45;
+
+
+                item.style.transform =
+                    `translate3d(
+                        ${offsetX}px,
+                        ${offsetY}px,
+                        0
+                    ) scale(
+                        ${1 + convergence * .08}
+                    )`;
+
+
+                item.style.color =
+                    convergence > .55
+                        ? "rgba(184,255,101,.42)"
+                        : "";
+
+
+                item.style.opacity =
+                    .55 +
+                    convergence * .45;
+
+            });
+
+
+        const centerNode =
+            evidenceField.querySelector(
+                ".evidence-center"
+            );
+
+        if (centerNode) {
+
+            const scale =
+                .92 +
+                convergence * .25;
+
+            centerNode.style.transform =
+                `translate(-50%, -50%) scale(${scale})`;
+
+        }
+
+    }
+
+
+    window.addEventListener(
+        "scroll",
+        updateEvidenceField,
+        {
+            passive: true
+        }
+    );
+
+    window.addEventListener(
+        "resize",
+        updateEvidenceField,
+        {
+            passive: true
+        }
+    );
+
+    updateEvidenceField();
+
+}
+
+
+/* ============================================================
+   MODULE HOVER / TOUCH STATE
+============================================================ */
+
+const modules =
+    document.querySelectorAll(".module");
+
+modules.forEach(module => {
+
+    module.addEventListener(
+        "pointerenter",
+        () => {
+
+            document.body.classList.add(
+                "instrument-active"
+            );
+
+        }
+    );
+
+    module.addEventListener(
+        "pointerleave",
+        () => {
+
+            document.body.classList.remove(
+                "instrument-active"
+            );
+
+        }
+    );
+
+});
+
+
+/* ============================================================
+   WORLD CANVAS
+============================================================ */
 
 const canvas =
     document.getElementById("world");
@@ -306,49 +672,59 @@ if (canvas) {
     if (ctx) {
 
         let width = 0;
-
         let height = 0;
-
         let dpr = 1;
-
-        let particles = [];
-
-        let pointerX = .5;
-
-        let pointerY = .5;
-
-        let targetX = .5;
-
-        let targetY = .5;
 
         let animationFrame = 0;
 
+        let particles = [];
+        let signalNodes = [];
 
-        const reducedMotion =
+
+        /*
+           Adaptive quality.
+           Phones get fewer objects.
+        */
+
+        const isMobile =
             window.matchMedia(
-                "(prefers-reduced-motion: reduce)"
+                "(max-width: 700px)"
             );
 
 
-        /* =====================================================
+        function qualityAmount() {
+
+            if (isMobile.matches) {
+                return 24;
+            }
+
+            if (window.innerWidth < 1200) {
+                return 38;
+            }
+
+            return 58;
+
+        }
+
+
+        /* ====================================================
            RESIZE
-        ====================================================== */
+        ==================================================== */
 
         function resize() {
-
-            dpr =
-                Math.min(
-                    window.devicePixelRatio || 1,
-                    1.5
-                );
-
 
             width =
                 window.innerWidth;
 
-
             height =
                 window.innerHeight;
+
+
+            dpr =
+                Math.min(
+                    window.devicePixelRatio || 1,
+                    isMobile.matches ? 1.15 : 1.5
+                );
 
 
             canvas.width =
@@ -356,16 +732,13 @@ if (canvas) {
                     width * dpr
                 );
 
-
             canvas.height =
                 Math.floor(
                     height * dpr
                 );
 
-
             canvas.style.width =
                 `${width}px`;
-
 
             canvas.style.height =
                 `${height}px`;
@@ -382,24 +755,21 @@ if (canvas) {
 
 
             createParticles();
+            createSignalNodes();
 
         }
 
 
-        /* =====================================================
+        /* ====================================================
            PARTICLES
-        ====================================================== */
+        ==================================================== */
 
         function createParticles() {
 
             const amount =
-                width < 700
-                    ? 18
-                    : 42;
-
+                qualityAmount();
 
             particles = [];
-
 
             for (
                 let i = 0;
@@ -410,27 +780,25 @@ if (canvas) {
                 particles.push({
 
                     x:
-                        Math.random()
-                        * width,
+                        Math.random() * width,
 
                     y:
-                        Math.random()
-                        * height,
+                        Math.random() * height,
+
+                    z:
+                        Math.random(),
 
                     radius:
-                        Math.random()
-                        * 1.1
-                        + .25,
+                        .25 +
+                        Math.random() * 1.05,
 
                     alpha:
-                        Math.random()
-                        * .28
-                        + .06,
+                        .035 +
+                        Math.random() * .25,
 
-                    speed:
-                        Math.random()
-                        * .12
-                        + .025,
+                    drift:
+                        .025 +
+                        Math.random() * .12,
 
                     phase:
                         Math.random()
@@ -444,135 +812,86 @@ if (canvas) {
         }
 
 
-        /* =====================================================
-           POINTER
-        ====================================================== */
+        /* ====================================================
+           SIGNAL NODES
+        ==================================================== */
 
-        function updatePointer(
-            x,
-            y
-        ) {
+        function createSignalNodes() {
 
-            targetX =
-                Math.max(
-                    0,
-                    Math.min(
-                        1,
-                        x / width
-                    )
-                );
+            const amount =
+                isMobile.matches
+                    ? 7
+                    : 11;
 
+            signalNodes = [];
 
-            targetY =
-                Math.max(
-                    0,
-                    Math.min(
-                        1,
-                        y / height
-                    )
-                );
+            for (
+                let i = 0;
+                i < amount;
+                i++
+            ) {
 
+                signalNodes.push({
 
-            document.documentElement
-                .style
-                .setProperty(
-                    "--pointer-x",
-                    targetX
-                );
+                    angle:
+                        (
+                            i / amount
+                        ) *
+                        Math.PI *
+                        2,
 
+                    distance:
+                        .38 +
+                        Math.random() * .28,
 
-            document.documentElement
-                .style
-                .setProperty(
-                    "--pointer-y",
-                    targetY
-                );
+                    wobble:
+                        Math.random()
+                        * Math.PI
+                        * 2,
+
+                    speed:
+                        .00012 +
+                        Math.random()
+                        * .00012
+
+                });
+
+            }
 
         }
 
 
-        window.addEventListener(
-            "pointermove",
-            event => {
-
-                updatePointer(
-                    event.clientX,
-                    event.clientY
-                );
-
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        window.addEventListener(
-            "touchmove",
-            event => {
-
-                const touch =
-                    event.touches?.[0];
-
-
-                if (!touch) return;
-
-
-                updatePointer(
-                    touch.clientX,
-                    touch.clientY
-                );
-
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        window.addEventListener(
-            "resize",
-            resize,
-            {
-                passive: true
-            }
-        );
-
-
-        /* =====================================================
-           GRID
-        ====================================================== */
+        /* ====================================================
+           BACKGROUND GRID
+        ==================================================== */
 
         function drawGrid() {
 
             const spacing =
-                width < 700
-                    ? 65
-                    : 90;
+                isMobile.matches
+                    ? 72
+                    : 92;
 
 
             const offsetX =
-                (pointerX - .5)
-                * 12;
-
+                (
+                    pointerX - .5
+                ) * 13;
 
             const offsetY =
-                (pointerY - .5)
-                * 12;
+                (
+                    pointerY - .5
+                ) * 13;
 
 
             ctx.save();
 
-
-            ctx.globalAlpha =
-                .18;
-
-
             ctx.strokeStyle =
-                "rgba(184,255,101,.09)";
-
+                "rgba(184,255,101,.055)";
 
             ctx.lineWidth = 1;
+
+            ctx.globalAlpha = .45;
 
 
             for (
@@ -626,400 +945,201 @@ if (canvas) {
         }
 
 
-        /* =====================================================
-           PARTICLE FIELD
-        ====================================================== */
+        /* ====================================================
+           DEPTH PARTICLES
+        ==================================================== */
 
         function drawParticles(time) {
 
-            for (
-                const particle
-                of particles
-            ) {
+            particles.forEach(
+                particle => {
 
-                particle.y -=
-                    particle.speed;
+                    particle.y -=
+                        particle.drift;
+
+                    if (
+                        particle.y < -8
+                    ) {
+
+                        particle.y =
+                            height + 8;
+
+                        particle.x =
+                            Math.random()
+                            * width;
+
+                    }
 
 
-                if (
-                    particle.y < -5
-                ) {
+                    const depth =
+                        .35 +
+                        particle.z * .65;
 
-                    particle.y =
-                        height + 5;
 
-                    particle.x =
-                        Math.random()
-                        * width;
+                    const x =
+                        particle.x
+                        +
+                        (
+                            pointerX - .5
+                        )
+                        * 10
+                        * depth;
+
+
+                    const y =
+                        particle.y
+                        +
+                        (
+                            pointerY - .5
+                        )
+                        * 10
+                        * depth;
+
+
+                    const pulse =
+                        1 +
+                        Math.sin(
+                            time * .001
+                            + particle.phase
+                        ) * .18;
+
+
+                    ctx.beginPath();
+
+                    ctx.arc(
+                        x,
+                        y,
+                        particle.radius
+                        * pulse
+                        * depth,
+                        0,
+                        Math.PI * 2
+                    );
+
+
+                    ctx.fillStyle =
+                        `rgba(
+                            184,
+                            255,
+                            101,
+                            ${particle.alpha * depth}
+                        )`;
+
+                    ctx.fill();
 
                 }
-
-
-                const drift =
-                    Math.sin(
-                        time * .00035
-                        + particle.phase
-                    )
-                    * .35;
-
-
-                const x =
-                    particle.x
-                    + drift
-                    + (
-                        pointerX
-                        - .5
-                    )
-                    * 8;
-
-
-                const y =
-                    particle.y
-                    + (
-                        pointerY
-                        - .5
-                    )
-                    * 8;
-
-
-                ctx.beginPath();
-
-
-                ctx.arc(
-                    x,
-                    y,
-                    particle.radius,
-                    0,
-                    Math.PI * 2
-                );
-
-
-                ctx.fillStyle =
-                    `rgba(
-                        184,
-                        255,
-                        101,
-                        ${particle.alpha}
-                    )`;
-
-
-                ctx.fill();
-
-            }
+            );
 
         }
 
 
-        /* =====================================================
-           INTELLIGENT SIGNAL FIELD
-        ====================================================== */
+        /* ====================================================
+           INTELLIGENT FIELD
+        ==================================================== */
 
-        function drawSignal(time) {
-
-            const maxScroll =
-                Math.max(
-                    document.documentElement
-                        .scrollHeight
-                    - window.innerHeight,
-                    1
-                );
-
-
-            const scroll =
-                window.scrollY
-                / maxScroll;
-
+        function drawIntelligenceField(time) {
 
             /*
-               0 → scattered observation
+               Instead of a decorative circle,
+               this is a field with states.
 
-               0.3 → convergence
+               top of page:
+               scattered
 
-               0.6 → connected system
+               middle:
+               convergence
 
-               1 → recurring loop
+               lower:
+               connected
+
+               final:
+               recurrence
             */
 
             const progress =
                 Math.min(
+                    1,
                     Math.max(
-                        scroll * 2.4,
-                        0
-                    ),
-                    1
+                        0,
+                        scrollProgress * 1.8
+                    )
                 );
 
 
-            const cx =
+            const centerX =
                 width *
                 (
                     .5
                     +
                     (
-                        pointerX
-                        - .5
-                    )
-                    * .035
+                        pointerX - .5
+                    ) * .045
                 );
 
 
-            const cy =
+            const centerY =
                 height *
                 (
-                    .47
+                    .49
                     +
                     (
-                        pointerY
-                        - .5
-                    )
-                    * .035
+                        pointerY - .5
+                    ) * .045
                 );
 
 
-            const baseRadius =
+            const base =
                 Math.min(
                     width,
                     height
-                )
-                *
-                (
-                    width < 700
-                        ? .24
-                        : .27
                 );
 
 
             const radius =
-                baseRadius
+                base *
+                (
+                    isMobile.matches
+                        ? .24
+                        : .28
+                )
                 *
                 (
-                    1
-                    + progress * .28
+                    .9 +
+                    progress * .32
                 );
-
-
-            const pulse =
-                Math.sin(
-                    time * .001
-                )
-                * 5;
 
 
             ctx.save();
 
 
-            /* =================================================
-               FIELD
-            ================================================== */
-
-            ctx.beginPath();
-
-
-            ctx.arc(
-                cx,
-                cy,
-                radius + pulse,
-                0,
-                Math.PI * 2
-            );
-
-
-            ctx.strokeStyle =
-                `rgba(
-                    184,
-                    255,
-                    101,
-                    ${.08 + progress * .1}
-                )`;
-
-
-            ctx.lineWidth = 1;
-
-            ctx.stroke();
-
-
-            /* =================================================
-               SECONDARY FIELD
-            ================================================== */
-
-            ctx.beginPath();
-
-
-            ctx.arc(
-                cx,
-                cy,
-                radius *
-                (
-                    .58
-                    + progress * .18
-                ),
-                0,
-                Math.PI * 2
-            );
-
-
-            ctx.strokeStyle =
-                "rgba(184,255,101,.06)";
-
-
-            ctx.stroke();
-
-
-            /* =================================================
-               CROSS AXIS
-            ================================================== */
-
-            ctx.strokeStyle =
-                "rgba(184,255,101,.065)";
-
-
-            ctx.beginPath();
-
-
-            ctx.moveTo(
-                cx - radius * 1.35,
-                cy
-            );
-
-
-            ctx.lineTo(
-                cx + radius * 1.35,
-                cy
-            );
-
-
-            ctx.moveTo(
-                cx,
-                cy - radius * 1.35
-            );
-
-
-            ctx.lineTo(
-                cx,
-                cy + radius * 1.35
-            );
-
-
-            ctx.stroke();
-
-
-            /* =================================================
-               SIGNAL TRACES
-            ================================================== */
-
-            const signalCount =
-                width < 700
-                    ? 6
-                    : 10;
-
+            /*
+               ---------------------------------------------
+               DEPTH RINGS
+            ---------------------------------------------
+            */
 
             for (
-                let i = 0;
-                i < signalCount;
-                i++
+                let layer = 0;
+                layer < 3;
+                layer++
             ) {
 
-                const angle =
+                const layerRadius =
+                    radius *
                     (
-                        i
-                        / signalCount
-                    )
-                    * Math.PI
-                    * 2;
-
-
-                const distance =
-                    radius
-                    *
-                    (
-                        1.15
-                        +
-                        Math.sin(
-                            time * .00045
-                            + i * 1.7
-                        )
-                        * .12
+                        .62 +
+                        layer * .24
                     );
-
-
-                const startX =
-                    cx
-                    +
-                    Math.cos(angle)
-                    * distance;
-
-
-                const startY =
-                    cy
-                    +
-                    Math.sin(angle)
-                    * distance;
-
-
-                const convergence =
-                    progress * .76;
-
-
-                const endX =
-                    startX
-                    +
-                    (
-                        cx
-                        - startX
-                    )
-                    * convergence;
-
-
-                const endY =
-                    startY
-                    +
-                    (
-                        cy
-                        - startY
-                    )
-                    * convergence;
 
 
                 ctx.beginPath();
 
-
-                ctx.moveTo(
-                    startX,
-                    startY
-                );
-
-
-                const controlX =
-                    (
-                        startX
-                        + endX
-                    ) / 2
-                    +
-                    Math.sin(
-                        time * .0005
-                        + i
-                    )
-                    * 30;
-
-
-                const controlY =
-                    (
-                        startY
-                        + endY
-                    ) / 2
-                    +
-                    Math.cos(
-                        time * .0004
-                        + i
-                    )
-                    * 30;
-
-
-                ctx.quadraticCurveTo(
-                    controlX,
-                    controlY,
-                    endX,
-                    endY
+                ctx.arc(
+                    centerX,
+                    centerY,
+                    layerRadius,
+                    0,
+                    Math.PI * 2
                 );
 
 
@@ -1028,145 +1148,365 @@ if (canvas) {
                         184,
                         255,
                         101,
-                        ${.06 + progress * .2}
+                        ${.035 + progress * .055}
                     )`;
 
-
                 ctx.lineWidth =
-                    progress > .5
-                        ? 1.2
+                    layer === 1
+                        ? 1.1
                         : .7;
-
 
                 ctx.stroke();
 
             }
 
 
-            /* =================================================
-               CONVERGENCE NODE
-            ================================================== */
+            /*
+               ---------------------------------------------
+               AXIS
+            ---------------------------------------------
+            */
+
+            ctx.strokeStyle =
+                "rgba(184,255,101,.065)";
+
+            ctx.lineWidth = 1;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                centerX - radius * 1.45,
+                centerY
+            );
+
+            ctx.lineTo(
+                centerX + radius * 1.45,
+                centerY
+            );
+
+            ctx.moveTo(
+                centerX,
+                centerY - radius * 1.45
+            );
+
+            ctx.lineTo(
+                centerX,
+                centerY + radius * 1.45
+            );
+
+            ctx.stroke();
+
+
+            /*
+               ---------------------------------------------
+               SIGNAL TRAJECTORIES
+            ---------------------------------------------
+            */
+
+            signalNodes.forEach(
+                (node, index) => {
+
+                    const animatedAngle =
+                        node.angle
+                        +
+                        time
+                        * node.speed;
+
+
+                    const wobble =
+                        Math.sin(
+                            time * .00045
+                            + node.wobble
+                        )
+                        * .045;
+
+
+                    const outerDistance =
+                        radius *
+                        (
+                            node.distance
+                            + wobble
+                        );
+
+
+                    const startX =
+                        centerX
+                        +
+                        Math.cos(
+                            animatedAngle
+                        )
+                        * outerDistance;
+
+
+                    const startY =
+                        centerY
+                        +
+                        Math.sin(
+                            animatedAngle
+                        )
+                        * outerDistance;
+
+
+                    /*
+                       This is the important bit.
+
+                       Progressively pull the endpoint
+                       toward the interpretation node.
+                    */
+
+                    const convergence =
+                        progress
+                        * .82;
+
+
+                    const endX =
+                        startX
+                        +
+                        (
+                            centerX -
+                            startX
+                        )
+                        * convergence;
+
+
+                    const endY =
+                        startY
+                        +
+                        (
+                            centerY -
+                            startY
+                        )
+                        * convergence;
+
+
+                    const curve =
+                        Math.sin(
+                            time * .00035
+                            + index
+                        )
+                        * (
+                            18 +
+                            progress * 25
+                        );
+
+
+                    const midX =
+                        (
+                            startX +
+                            endX
+                        ) / 2
+                        +
+                        Math.cos(
+                            animatedAngle
+                        )
+                        * curve;
+
+
+                    const midY =
+                        (
+                            startY +
+                            endY
+                        ) / 2
+                        +
+                        Math.sin(
+                            animatedAngle
+                        )
+                        * curve;
+
+
+                    ctx.beginPath();
+
+                    ctx.moveTo(
+                        startX,
+                        startY
+                    );
+
+                    ctx.quadraticCurveTo(
+                        midX,
+                        midY,
+                        endX,
+                        endY
+                    );
+
+
+                    ctx.strokeStyle =
+                        `rgba(
+                            184,
+                            255,
+                            101,
+                            ${.035 + progress * .17}
+                        )`;
+
+                    ctx.lineWidth =
+                        .6 +
+                        progress * .7;
+
+                    ctx.stroke();
+
+
+                    /*
+                       Signal origin node.
+                    */
+
+                    ctx.beginPath();
+
+                    ctx.arc(
+                        startX,
+                        startY,
+                        1.4 +
+                        progress * .9,
+                        0,
+                        Math.PI * 2
+                    );
+
+                    ctx.fillStyle =
+                        `rgba(
+                            184,
+                            255,
+                            101,
+                            ${.18 + progress * .32}
+                        )`;
+
+                    ctx.fill();
+
+                }
+            );
+
+
+            /*
+               ---------------------------------------------
+               INTERPRETATION FIELD
+            ---------------------------------------------
+            */
+
+            if (progress > .18) {
+
+                const interpretation =
+                    radius *
+                    (
+                        .7 +
+                        progress * .2
+                    );
+
+
+                const rotation =
+                    time * .00016;
+
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    centerX,
+                    centerY,
+                    interpretation,
+                    rotation,
+                    rotation +
+                    Math.PI * .82
+                );
+
+
+                ctx.strokeStyle =
+                    `rgba(
+                        184,
+                        255,
+                        101,
+                        ${progress * .32}
+                    )`;
+
+                ctx.lineWidth = 1.5;
+
+                ctx.stroke();
+
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    centerX,
+                    centerY,
+                    interpretation * .82,
+                    rotation + Math.PI,
+                    rotation +
+                    Math.PI * 1.62
+                );
+
+                ctx.strokeStyle =
+                    `rgba(
+                        184,
+                        255,
+                        101,
+                        ${progress * .16}
+                    )`;
+
+                ctx.stroke();
+
+            }
+
+
+            /*
+               ---------------------------------------------
+               CENTRAL INTELLIGENCE NODE
+            ---------------------------------------------
+            */
 
             const nodeRadius =
-                3
-                +
-                progress * 7;
+                3 +
+                progress * 6;
+
+
+            const pulse =
+                Math.sin(
+                    time * .0013
+                ) * 1.8;
 
 
             ctx.beginPath();
 
-
             ctx.arc(
-                cx,
-                cy,
-                nodeRadius,
+                centerX,
+                centerY,
+                nodeRadius + pulse,
                 0,
                 Math.PI * 2
             );
 
 
             ctx.fillStyle =
-                `rgba(
-                    184,
-                    255,
-                    101,
-                    ${.5 + progress * .4}
-                )`;
-
+                "rgba(184,255,101,.9)";
 
             ctx.shadowBlur =
-                12
-                +
-                progress * 22;
-
+                12 +
+                progress * 25;
 
             ctx.shadowColor =
-                "rgba(184,255,101,.8)";
-
+                "rgba(184,255,101,.75)";
 
             ctx.fill();
 
 
-            /* =================================================
-               INTERPRETATION RING
-            ================================================== */
-
-            if (
-                progress > .25
-            ) {
-
-                const interpretationRadius =
-                    radius
-                    *
-                    (
-                        .72
-                        +
-                        progress * .18
-                    );
-
-
-                const rotation =
-                    time * .00015;
-
-
-                ctx.beginPath();
-
-
-                ctx.arc(
-                    cx,
-                    cy,
-                    interpretationRadius,
-                    rotation,
-                    rotation
-                    + Math.PI * .7
-                );
-
-
-                ctx.strokeStyle =
-                    `rgba(
-                        184,
-                        255,
-                        101,
-                        ${progress * .35}
-                    )`;
-
-
-                ctx.lineWidth =
-                    1.5;
-
-
-                ctx.stroke();
-
-            }
-
-
-            /* =================================================
+            /*
+               ---------------------------------------------
                SCAN ARC
-            ================================================== */
+            ---------------------------------------------
+            */
 
-            const angle =
-                time * .00018;
+            const scanAngle =
+                time * .0002;
 
 
             ctx.beginPath();
 
-
             ctx.arc(
-                cx,
-                cy,
+                centerX,
+                centerY,
                 radius * 1.12,
-                angle,
-                angle + .55
+                scanAngle,
+                scanAngle + .48
             );
-
 
             ctx.strokeStyle =
                 "rgba(184,255,101,.28)";
 
-
-            ctx.lineWidth =
-                1.5;
-
+            ctx.lineWidth = 1.4;
 
             ctx.stroke();
 
@@ -1176,26 +1516,120 @@ if (canvas) {
         }
 
 
-        /* =====================================================
-           RENDER LOOP
-        ====================================================== */
+        /* ====================================================
+           RECURRENCE FIELD
+        ==================================================== */
+
+        function drawRecurrence(time) {
+
+            /*
+               Becomes more visible toward the bottom
+               of the page.
+
+               This makes the final section feel like
+               the system is returning to the street.
+            */
+
+            const recurrence =
+                Math.max(
+                    0,
+                    (scrollProgress - .58)
+                    / .42
+                );
+
+
+            if (recurrence <= 0) {
+                return;
+            }
+
+
+            const cx =
+                width / 2;
+
+            const cy =
+                height * .53;
+
+
+            const radius =
+                Math.min(
+                    width,
+                    height
+                )
+                * (
+                    .24 +
+                    recurrence * .16
+                );
+
+
+            ctx.save();
+
+            ctx.globalAlpha =
+                recurrence * .42;
+
+
+            for (
+                let i = 0;
+                i < 2;
+                i++
+            ) {
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    cx,
+                    cy,
+                    radius *
+                    (
+                        1 +
+                        i * .45
+                    ),
+                    time * .00015
+                    + i,
+                    time * .00015
+                    + i
+                    + Math.PI * 1.35
+                );
+
+                ctx.strokeStyle =
+                    "rgba(184,255,101,.2)";
+
+                ctx.lineWidth =
+                    i === 0
+                        ? 1.2
+                        : .7;
+
+                ctx.stroke();
+
+            }
+
+
+            ctx.restore();
+
+        }
+
+
+        /* ====================================================
+           RENDER
+        ==================================================== */
 
         function render(time) {
 
+            /*
+               Smooth pointer.
+            */
+
             pointerX +=
                 (
-                    targetX
-                    - pointerX
-                )
-                * .035;
+                    pointerTargetX -
+                    pointerX
+                ) * .045;
 
 
             pointerY +=
                 (
-                    targetY
-                    - pointerY
-                )
-                * .035;
+                    pointerTargetY -
+                    pointerY
+                ) * .045;
 
 
             ctx.clearRect(
@@ -1210,12 +1644,12 @@ if (canvas) {
 
             drawParticles(time);
 
-            drawSignal(time);
+            drawIntelligenceField(time);
+
+            drawRecurrence(time);
 
 
-            if (
-                !document.hidden
-            ) {
+            if (!document.hidden) {
 
                 animationFrame =
                     requestAnimationFrame(
@@ -1227,24 +1661,22 @@ if (canvas) {
         }
 
 
-        /* =====================================================
+        /* ====================================================
            VISIBILITY
-        ====================================================== */
+        ==================================================== */
 
         document.addEventListener(
             "visibilitychange",
             () => {
 
-                if (
-                    document.hidden
-                ) {
+                if (document.hidden) {
 
                     cancelAnimationFrame(
                         animationFrame
                     );
 
                 } else if (
-                    !reducedMotion.matches
+                    !reduceMotion.matches
                 ) {
 
                     animationFrame =
@@ -1258,16 +1690,23 @@ if (canvas) {
         );
 
 
-        /* =====================================================
+        /* ====================================================
            START
-        ====================================================== */
+        ==================================================== */
 
         resize();
 
 
-        if (
-            !reducedMotion.matches
-        ) {
+        window.addEventListener(
+            "resize",
+            resize,
+            {
+                passive: true
+            }
+        );
+
+
+        if (!reduceMotion.matches) {
 
             animationFrame =
                 requestAnimationFrame(
@@ -1281,32 +1720,62 @@ if (canvas) {
 }
 
 
-/* =============================================================
-   EVIDENCE FIELD — SIGNAL CONVERGENCE
-============================================================= */
+/* ============================================================
+   FINAL SEQUENCE — MOBILE FLOW
+============================================================ */
 
-const evidenceField =
+const finalSequence =
     document.querySelector(
-        ".evidence-field"
+        ".final-sequence"
     );
 
 
-if (evidenceField) {
+if (finalSequence) {
 
-    const evidenceItems =
-        evidenceField.querySelectorAll(
-            ":scope > span"
+    /*
+       The HTML remains untouched.
+
+       On small screens we use CSS wrapping,
+       but we also expose the current loop
+       position through a subtle class.
+    */
+
+    const sequenceItems =
+        finalSequence.querySelectorAll(
+            "span"
         );
 
 
-    function resetEvidence() {
+    function updateFinalSequence() {
 
-        evidenceItems.forEach(
-            item => {
+        const maxScroll =
+            Math.max(
+                document.documentElement.scrollHeight
+                    - window.innerHeight,
+                1
+            );
 
-                item.style.transform = "";
+        const progress =
+            window.scrollY / maxScroll;
 
-                item.style.color = "";
+
+        const active =
+            Math.min(
+                sequenceItems.length - 1,
+                Math.floor(
+                    progress *
+                    sequenceItems.length
+                )
+            );
+
+
+        sequenceItems.forEach(
+            (item, index) => {
+
+                item.style.opacity =
+                    index <= active
+                        ? "1"
+                        : ".55";
 
             }
         );
@@ -1314,160 +1783,31 @@ if (evidenceField) {
     }
 
 
-    evidenceField.addEventListener(
-        "pointermove",
-        event => {
-
-            const rect =
-                evidenceField
-                    .getBoundingClientRect();
-
-
-            const x =
-                event.clientX
-                - rect.left;
-
-
-            const y =
-                event.clientY
-                - rect.top;
-
-
-            const centerX =
-                rect.width / 2;
-
-
-            const centerY =
-                rect.height / 2;
-
-
-            evidenceItems.forEach(
-                (
-                    item,
-                    index
-                ) => {
-
-                    const itemRect =
-                        item.getBoundingClientRect();
-
-
-                    const itemX =
-                        itemRect.left
-                        - rect.left;
-
-
-                    const itemY =
-                        itemRect.top
-                        - rect.top;
-
-
-                    const dx =
-                        (
-                            centerX
-                            - itemX
-                        )
-                        * .06;
-
-
-                    const dy =
-                        (
-                            centerY
-                            - itemY
-                        )
-                        * .06;
-
-
-                    const pointerInfluence =
-                        (
-                            index % 2 === 0
-                                ? 1
-                                : .65
-                        );
-
-
-                    item.style.transform =
-                        `translate(
-                            ${dx * pointerInfluence}px,
-                            ${dy * pointerInfluence}px
-                        )`;
-
-
-                    item.style.color =
-                        "rgba(184,255,101,.42)";
-
-                }
-            );
-
-        },
+    window.addEventListener(
+        "scroll",
+        updateFinalSequence,
         {
             passive: true
         }
     );
 
-
-    evidenceField.addEventListener(
-        "pointerleave",
-        resetEvidence
-    );
+    updateFinalSequence();
 
 }
 
 
-/* =============================================================
-   MODULE INTERACTION
-============================================================= */
+/* ============================================================
+   INITIAL POINTER
+============================================================ */
 
-const modules =
-    document.querySelectorAll(
-        ".module"
+document.documentElement.style
+    .setProperty(
+        "--pointer-x",
+        ".5"
     );
 
-
-modules.forEach(
-    module => {
-
-        module.addEventListener(
-            "pointerenter",
-            () => {
-
-                document.body.dataset.focus =
-                    module.dataset.module
-                    || "";
-
-            }
-        );
-
-
-        module.addEventListener(
-            "pointerleave",
-            () => {
-
-                delete
-                    document.body
-                        .dataset
-                        .focus;
-
-            }
-        );
-
-    }
-);
-
-
-/* =============================================================
-   PAGE INITIALIZATION
-============================================================= */
-
-document.documentElement
-    .classList
-    .add("ixvyn-ready");
-
-
-console.log(
-    "%cIXVYN",
-    "color:#b8ff65;font-weight:800;font-size:18px"
-);
-
-console.log(
-    "Continuous civic intelligence initialized."
-);
+document.documentElement.style
+    .setProperty(
+        "--pointer-y",
+        ".5"
+    );
